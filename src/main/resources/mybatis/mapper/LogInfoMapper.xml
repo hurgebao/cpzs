@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.none.cpzs.dao.LogInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.none.cpzs.dao.po.LogInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tran_date" property="tranDate" jdbcType="VARCHAR" />
+    <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+    <result column="mobilc_mac" property="mobilcMac" jdbcType="VARCHAR" />
+    <result column="mobile_imei" property="mobileImei" jdbcType="VARCHAR" />
+    <result column="mobile_ip" property="mobileIp" jdbcType="VARCHAR" />
+    <result column="mobile_region" property="mobileRegion" jdbcType="VARCHAR" />
+    <result column="result_code" property="resultCode" jdbcType="VARCHAR" />
+    <result column="result_msg" property="resultMsg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tran_date, mobile_no, mobilc_mac, mobile_imei, mobile_ip, mobile_region, result_code, 
+    result_msg, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from log_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from log_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.none.cpzs.dao.po.LogInfo" >
+    insert into log_info (id, tran_date, mobile_no, 
+      mobilc_mac, mobile_imei, mobile_ip, 
+      mobile_region, result_code, result_msg, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{tranDate,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR}, 
+      #{mobilcMac,jdbcType=VARCHAR}, #{mobileImei,jdbcType=VARCHAR}, #{mobileIp,jdbcType=VARCHAR}, 
+      #{mobileRegion,jdbcType=VARCHAR}, #{resultCode,jdbcType=VARCHAR}, #{resultMsg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.none.cpzs.dao.po.LogInfo" >
+    insert into log_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tranDate != null" >
+        tran_date,
+      </if>
+      <if test="mobileNo != null" >
+        mobile_no,
+      </if>
+      <if test="mobilcMac != null" >
+        mobilc_mac,
+      </if>
+      <if test="mobileImei != null" >
+        mobile_imei,
+      </if>
+      <if test="mobileIp != null" >
+        mobile_ip,
+      </if>
+      <if test="mobileRegion != null" >
+        mobile_region,
+      </if>
+      <if test="resultCode != null" >
+        result_code,
+      </if>
+      <if test="resultMsg != null" >
+        result_msg,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tranDate != null" >
+        #{tranDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilcMac != null" >
+        #{mobilcMac,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileImei != null" >
+        #{mobileImei,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileIp != null" >
+        #{mobileIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileRegion != null" >
+        #{mobileRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        #{resultCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resultMsg != null" >
+        #{resultMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.dao.po.LogInfo" >
+    update log_info
+    <set >
+      <if test="tranDate != null" >
+        tran_date = #{tranDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        mobile_no = #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilcMac != null" >
+        mobilc_mac = #{mobilcMac,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileImei != null" >
+        mobile_imei = #{mobileImei,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileIp != null" >
+        mobile_ip = #{mobileIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileRegion != null" >
+        mobile_region = #{mobileRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        result_code = #{resultCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resultMsg != null" >
+        result_msg = #{resultMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.none.cpzs.dao.po.LogInfo" >
+    update log_info
+    set tran_date = #{tranDate,jdbcType=VARCHAR},
+      mobile_no = #{mobileNo,jdbcType=VARCHAR},
+      mobilc_mac = #{mobilcMac,jdbcType=VARCHAR},
+      mobile_imei = #{mobileImei,jdbcType=VARCHAR},
+      mobile_ip = #{mobileIp,jdbcType=VARCHAR},
+      mobile_region = #{mobileRegion,jdbcType=VARCHAR},
+      result_code = #{resultCode,jdbcType=VARCHAR},
+      result_msg = #{resultMsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
