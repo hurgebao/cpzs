@@ -12,8 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class PositionController {
     @Autowired
     private PositionMapper positionMapper;
-    @GetMapping("position")
-    public Object getPosition(){
-        return positionMapper.selectPositionByMarket();
+    @GetMapping("selectTodayEntrust")
+    public Object selectTodayEntrust(){
+        return positionMapper.selectTodayEntrust();
+    }
+    @GetMapping("selectPositionRange")
+    public Object selectPositionRange(){
+        return positionMapper.selectPositionRange();
+    }
+    @GetMapping("selectPositionRangeByFundPool")
+    public Object selectPositionRangeByFundPool(){
+        return positionMapper.selectPositionRangeByFundPool();
+    }
+    @GetMapping("selectTradeHistory")
+    public Object selectTradeHistory(){
+        return positionMapper.selectTradeHistory();
     }
 }
