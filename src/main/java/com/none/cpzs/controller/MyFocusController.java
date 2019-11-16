@@ -1,9 +1,9 @@
 package com.none.cpzs.controller;
 
-import com.none.cpzs.dao.MyFocusStockMapper;
-import com.none.cpzs.dao.OrgInfoMapper;
-import com.none.cpzs.dao.po.MyFocusStock;
-import com.none.cpzs.dao.po.OrgInfo;
+import com.none.cpzs.dao1.MyFocusStockMapper;
+import com.none.cpzs.dao1.OrgInfoMapper;
+import com.none.cpzs.po.MyFocusStock;
+import com.none.cpzs.po.OrgInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,4 +26,6 @@ public class MyFocusController {
     public OrgInfo org(){
         return orgInfoMapper.selectByPrimaryKey(1);
     }
+
+
 }

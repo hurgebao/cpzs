@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.none.cpzs.dao.MyFocusStockMapper" >
-  <resultMap id="BaseResultMap" type="com.none.cpzs.dao.po.MyFocusStock" >
+<mapper namespace="com.none.cpzs.dao1.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.none.cpzs.po.UserInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
-    <result column="stock_code" property="stockCode" jdbcType="VARCHAR" />
-    <result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+    <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, org_code, stock_code, stock_name, status, create_time, update_time
+    id, mobile_no, user_name, password, status, remark, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from my_focus_stock
+    from user_info
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from my_focus_stock
+    delete from user_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.none.cpzs.dao.po.MyFocusStock" >
-    insert into my_focus_stock (id, user_id, org_code, 
-      stock_code, stock_name, status, 
+  <insert id="insert" parameterType="com.none.cpzs.po.UserInfo" >
+    insert into user_info (id, mobile_no, user_name, 
+      password, status, remark, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orgCode,jdbcType=VARCHAR}, 
-      #{stockCode,jdbcType=VARCHAR}, #{stockName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{mobileNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.none.cpzs.dao.po.MyFocusStock" >
-    insert into my_focus_stock
+  <insert id="insertSelective" parameterType="com.none.cpzs.po.UserInfo" >
+    insert into user_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="userId != null" >
-        user_id,
+      <if test="mobileNo != null" >
+        mobile_no,
       </if>
-      <if test="orgCode != null" >
-        org_code,
+      <if test="userName != null" >
+        user_name,
       </if>
-      <if test="stockCode != null" >
-        stock_code,
-      </if>
-      <if test="stockName != null" >
-        stock_name,
+      <if test="password != null" >
+        password,
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -64,20 +64,20 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+      <if test="mobileNo != null" >
+        #{mobileNo,jdbcType=VARCHAR},
       </if>
-      <if test="orgCode != null" >
-        #{orgCode,jdbcType=VARCHAR},
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="stockCode != null" >
-        #{stockCode,jdbcType=VARCHAR},
-      </if>
-      <if test="stockName != null" >
-        #{stockName,jdbcType=VARCHAR},
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -87,23 +87,23 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.dao.po.MyFocusStock" >
-    update my_focus_stock
+  <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.po.UserInfo" >
+    update user_info
     <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="mobileNo != null" >
+        mobile_no = #{mobileNo,jdbcType=VARCHAR},
       </if>
-      <if test="orgCode != null" >
-        org_code = #{orgCode,jdbcType=VARCHAR},
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="stockCode != null" >
-        stock_code = #{stockCode,jdbcType=VARCHAR},
-      </if>
-      <if test="stockName != null" >
-        stock_name = #{stockName,jdbcType=VARCHAR},
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -114,13 +114,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.none.cpzs.dao.po.MyFocusStock" >
-    update my_focus_stock
-    set user_id = #{userId,jdbcType=INTEGER},
-      org_code = #{orgCode,jdbcType=VARCHAR},
-      stock_code = #{stockCode,jdbcType=VARCHAR},
-      stock_name = #{stockName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.none.cpzs.po.UserInfo" >
+    update user_info
+    set mobile_no = #{mobileNo,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

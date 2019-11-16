@@ -1,6 +1,6 @@
-package com.none.cpzs.dao;
+package com.none.cpzs.dao1;
 
-import com.none.cpzs.dao.po.MyFocusAccount;
+import com.none.cpzs.po.MyFocusAccount;
 
 public interface MyFocusAccountMapper {
     /**

@@ -1,4 +1,4 @@
-package com.none.cpzs.dao.po;
+package com.none.cpzs.po;
 
 import com.none.cpzs.common.BaseVO;
 

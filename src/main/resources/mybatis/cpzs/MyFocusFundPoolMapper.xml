@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.none.cpzs.dao.MyFocusFundPoolMapper" >
-  <resultMap id="BaseResultMap" type="com.none.cpzs.dao.po.MyFocusFundPool" >
+<mapper namespace="com.none.cpzs.dao1.MyFocusFundPoolMapper" >
+  <resultMap id="BaseResultMap" type="com.none.cpzs.po.MyFocusFundPool" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     delete from my_focus_fund_pool
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.none.cpzs.dao.po.MyFocusFundPool" >
+  <insert id="insert" parameterType="com.none.cpzs.po.MyFocusFundPool" >
     insert into my_focus_fund_pool (id, user_id, org_code, 
       fund_pool_code, status, create_time, 
       update_time)
@@ -31,7 +31,7 @@
       #{fundPoolCode,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.none.cpzs.dao.po.MyFocusFundPool" >
+  <insert id="insertSelective" parameterType="com.none.cpzs.po.MyFocusFundPool" >
     insert into my_focus_fund_pool
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.dao.po.MyFocusFundPool" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.po.MyFocusFundPool" >
     update my_focus_fund_pool
     <set >
       <if test="userId != null" >
@@ -104,7 +104,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.none.cpzs.dao.po.MyFocusFundPool" >
+  <update id="updateByPrimaryKey" parameterType="com.none.cpzs.po.MyFocusFundPool" >
     update my_focus_fund_pool
     set user_id = #{userId,jdbcType=INTEGER},
       org_code = #{orgCode,jdbcType=VARCHAR},

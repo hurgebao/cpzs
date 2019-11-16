@@ -1,8 +1,8 @@
-package com.none.cpzs.dao;
+package com.none.cpzs.dao1;
 
-import com.none.cpzs.dao.po.OrgInfo;
+import com.none.cpzs.po.LogInfo;
 
-public interface OrgInfoMapper {
+public interface LogInfoMapper {
     /**
      *
      * @mbggenerated 2019-11-15
@@ -13,29 +13,29 @@ public interface OrgInfoMapper {
      *
      * @mbggenerated 2019-11-15
      */
-    int insert(OrgInfo record);
+    int insert(LogInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int insertSelective(OrgInfo record);
+    int insertSelective(LogInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    OrgInfo selectByPrimaryKey(Integer id);
+    LogInfo selectByPrimaryKey(Integer id);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int updateByPrimaryKeySelective(OrgInfo record);
+    int updateByPrimaryKeySelective(LogInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int updateByPrimaryKey(OrgInfo record);
+    int updateByPrimaryKey(LogInfo record);
 }

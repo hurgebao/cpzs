@@ -1,6 +1,6 @@
-package com.none.cpzs.dao;
+package com.none.cpzs.dao1;
 
-import com.none.cpzs.dao.po.UserInfo;
+import com.none.cpzs.po.UserInfo;
 
 public interface UserInfoMapper {
     /**

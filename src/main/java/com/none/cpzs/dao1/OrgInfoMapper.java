@@ -1,8 +1,8 @@
-package com.none.cpzs.dao;
+package com.none.cpzs.dao1;
 
-import com.none.cpzs.dao.po.MyFocusStock;
+import com.none.cpzs.po.OrgInfo;
 
-public interface MyFocusStockMapper {
+public interface OrgInfoMapper {
     /**
      *
      * @mbggenerated 2019-11-15
@@ -13,29 +13,29 @@ public interface MyFocusStockMapper {
      *
      * @mbggenerated 2019-11-15
      */
-    int insert(MyFocusStock record);
+    int insert(OrgInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int insertSelective(MyFocusStock record);
+    int insertSelective(OrgInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    MyFocusStock selectByPrimaryKey(Integer id);
+    OrgInfo selectByPrimaryKey(Integer id);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int updateByPrimaryKeySelective(MyFocusStock record);
+    int updateByPrimaryKeySelective(OrgInfo record);
 
     /**
      *
      * @mbggenerated 2019-11-15
      */
-    int updateByPrimaryKey(MyFocusStock record);
+    int updateByPrimaryKey(OrgInfo record);
 }

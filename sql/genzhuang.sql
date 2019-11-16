@@ -128,3 +128,39 @@ tcdb.t_securities_trader_entrust
 where stock_code='002822'  and fund_pool_code=1621  and data_date='2019-11-15'
 ) tmp
 group by tmp.securities_account_no;
+
+
+
+select * from tcdb.t_securities_trader_entrust where stock_name like'中装转债';
+
+
+
+select a.*,b.total_trade_num,b.buy_num,b.sell_num,b.jmr_num,b.jmr_num/a.total_volume*100 from 
+(
+select 
+data_date,
+max(current_price) as current_price,
+sum(ifnull(recent_market_value,0)) as market_value  ,
+sum(ifnull(total_volume,0)) as total_volume,
+sum(ifnull(available_sell_volume,0)) as enable,
+sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price
+from tcdb.t_securities_trader_hold 
+where stock_code='128060'   and fund_pool_code=1621 group by data_date 
+) a
+left join 
+(
+select 
+tmp.data_date,
+sum(ifnull(tmp.buy_num,0)) as buy_num,
+sum(ifnull(tmp.sell_num,0)) as sell_num,
+sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num,
+sum(ifnull(tmp.buy_num,0)-ifnull(tmp.sell_num,0)) as jmr_num
+from
+(
+select data_date,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num from tcdb.t_securities_trader_entrust 
+where stock_code='128060'  and fund_pool_code=1621 
+)tmp
+group by tmp.data_date
+) b 
+on a.data_date=b.data_date
+order by a.data_date desc ;

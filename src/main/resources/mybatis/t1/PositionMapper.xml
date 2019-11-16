@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.none.cpzs.dao2.PositionMapper" >
+
+    <select id="selectPositionByMarket" resultType="java.util.HashMap">
+          select action_time,bs_flag,bs_flag_desc,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust ;
+    </select>
+</mapper>
