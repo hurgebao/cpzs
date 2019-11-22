@@ -72,7 +72,7 @@ order by a.recent_market_value desc,b.total_trade_num desc ;
 
 
 --查询某只股票历史操作记录(查看操盘股票活跃交易日)
-select a.*,b.total_trade_num,b.buy_num,b.sell_num,b.jmr_num,b.jmr_num/a.total_volume*100 from 
+select a.*,b.total_trade_num,b.buy_num,b.sell_num,b.jmr_num,b.jmr_num/a.total_volume*100 as rate from 
 (
 select 
 data_date,
@@ -109,9 +109,14 @@ select action_time,bs_flag,bs_flag_desc,status_desc,order_no,order_price,order_v
 
 --通过券商交易的
 2019-11-14
+10001886
 10001889 安信850_信用
+10001890
+10001891
 10001929 张旭鹏_信用
 10002059 王泽盛_信用
+10001971
+10002002
 
 select 
 tmp.securities_account_no,
@@ -125,7 +130,7 @@ select
     case when bs_flag='1' then transaction_vloume else 0 end as sell_num 
 from 
 tcdb.t_securities_trader_entrust 
-where stock_code='002822'  and fund_pool_code=1621  and data_date='2019-11-15'
+where stock_code='002822'  and fund_pool_code=1621  and data_date='2019-11-20'
 ) tmp
 group by tmp.securities_account_no;
 
@@ -164,3 +169,15 @@ group by tmp.data_date
 ) b 
 on a.data_date=b.data_date
 order by a.data_date desc ;
+
+
+
+select
+   ip2,count(*)
+from (
+select distinct account_no,ip2 from bcdb.b_system_log where tran_date='2019-11-19' and service_name='ACCOUNTLOGIN')
+tmp group by ip1,ip2
+having count(*)>1
+;
+
+select action_time,securities_account_no,bs_flag,bs_flag_desc,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where stock_code='002822' and data_date='2019-11-22' and fund_pool_code=1621  and bs_flag in ('0','1') order by action_time asc ;
