@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!-- 加载easyUI中的js和css -->
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/demo/demo.css">
+<link rel="stylesheet" type="text/css" href="../css/common.css">
+
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js"></script>
+
+<!-- 扩展验证 -->
+<script type="text/javascript" src="../js/common/easyuiValidate.js"></script>
+
+<!-- 公共的js -->
+<script type="text/javascript" src="../js/common/acl.js"></script>
+
+<script type="text/javascript" src="../js/common/format.js"></script>
+<script type="text/javascript" src="../js/common/export.js"></script>
+<script type="text/javascript" src="../js/common/dict.js"></script>
+<div id="queryTb" class="easyui-panel" data-options="title:''" style="background:#F0F0F0;width:100%">
+	<table>
+		<tr></tr>
+		<tr>
+			<td><input class="easyui-textbox" id="re_securitiesAccountNo" name="re_securitiesAccountNo" data-options="prompt:'证券账户名称'" style="width: 120px;"/></td>
+			<td><input class="easyui-numberbox" id="re_fundPoolCode" name="re_fundPoolCode" data-options="prompt:'资金池编号'" style="width: 120px;"/></td>
+			<td><select class="easyui-combobox" id="re_systemBelong" name="re_systemBelong" data-options="prompt:'所属系统',panelHeight:100,value:''" style="width: 120px;">
+					<option value="0">T1</option>
+					<option value="1">WF</option>
+				</select>
+			</td>
+			<td><input  id="query_reDate" type= "text" class= "easyui-datebox" data-options="prompt:'数据日期'" style="width: 120px;"/></td>
+			<td><a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="re_search();">搜索</a></td>
+			<td><a class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="re_clean();">重置</a></td>
+		</tr>
+	</table>
+</div>
+<!-- 测试结果信息列表-->
+<table id="datagrid_data" border="0" cellpadding="0" cellspacing="0" width="100%" height="550px">
+	<thead id="datagrid_data">
+		<tr align="center"></tr>
+	</thead>
+</table>
+<script type="text/javascript">
+	function re_clean() {
+		$('#re_securitiesAccountNo').numberbox('reset');
+		$('#re_fundPoolCode').numberbox('reset');
+		$('#re_systemBelong').combobox('reset');
+		$('#query_reDate').datebox('reset');
+	}
+	function do_search() {
+		var sysb_ = $('#re_systemBelong').combobox('getValue');
+		//if(!sysb_) {
+		//	sysb_ = 0;
+		//}
+		var data_ = {securitiesAccountNo : $('#re_securitiesAccountNo').numberbox('getValue'),
+				fundPoolCode : $('#re_fundPoolCode').numberbox('getValue'),
+				systemBelong : sysb_};
+		var query_date = $('#query_reDate').datebox('getValue');
+		if(query_date != '') {
+			data_.testDate = new Date(query_date);
+		}
+		$('#datagrid_data').datagrid('reload',data_);
+	}
+	function re_search() {
+		var sysb_ = $('#re_systemBelong').combobox('getValue');
+		//if(!sysb_) {
+		//	sysb_ = 0;
+		//}
+		var data_ = {securitiesAccountNo : $('#re_securitiesAccountNo').numberbox('getValue'),
+				fundPoolCode : $('#re_fundPoolCode').numberbox('getValue'),
+				systemBelong : sysb_};
+		var query_date = $('#query_reDate').datebox('getValue');
+		if(query_date != '') {
+			data_.testDate = new Date(query_date);
+		}
+		$('#datagrid_data').datagrid({
+			url:  '/selectTodayEntrust',
+			queryParams : data_,
+	        singleSelect: true,
+	        striped : true,
+	        fitColumns : false,
+	        border : false,
+	        showFooter: false,
+	        idField : 'id',
+	        rownumbers : true,
+	        pagination : true,
+	        pageSize : 20,
+	        pagePosition : 'bottom',
+	        rowStyler:function(index,row){  //没有对账的   设置字体颜色
+	    		if (row.test_status != 0){
+	    			return 'color:#FF0000;';
+	    		} 
+	    	},
+	    	//自适应列
+	        columns : [ [
+	        	{title : '测试时间', field : 'testTime', align: 'center', width : 150, formatter : function(value,row,index){
+	        		if(value != null) {
+	        			return new Date(value).Format("yyyy-MM-dd hh:mm:ss"); 
+	        		}
+	        		return ''; }},
+	        	{title : '系统', field : 'systemBelong', align: 'center', width : 50,formatter : formatSystem_},
+	        	{title : '资金池', field : 'fundPoolCode', align: 'center', width : 50},
+	        	{title : '券商名称', field : 'secTraderName', align: 'center', width : 80},
+	        	{title : '证券账户名称', field : 'securitiesAccountName', align: 'center', width : 80},
+	            {title : '证券账户', field : 'securitiesAccountNo', align: 'center', width : 80},
+	            {title : '交易类型', field : 'tradeType', align: 'center', width : 60,formatter : formatTrade_},
+	            {title : '测试结果', field : 'testStatus', align: 'center', width : 60,formatter : formatTstRslt_},
+	            {title : '测试信息', field : 'errorMessage', align: 'center', width : 150},
+	            {title : '测试人员', field : 'username', align: 'center', width : 60},
+	            {title : '请求地址', field : 'requestUrl', align: 'center', width : 150},
+	            {title : '请求信息', field : 'requestData', align: 'center', width : 150},
+	            {title : '返回信息', field : 'responseData', align: 'center', width : 150},
+	            {title : '校验信息', field : 'checkMessage', align: 'center', width : 150}
+	            ]]
+		});
+	}
+	function formatSystem_(val,row,index) {
+		if(val == 0) {
+			return 'T1';
+		} else if(val == 1) {
+			return 'T0';
+		} else {
+			return '越大';
+		}
+		return val;
+	}
+	function formatTrade_(val,row,index) {
+		if(val == 1) {
+			return '普通买入';
+		} else if(val == 2) {
+			return '普通卖出';
+		} else if(val == 3) {
+			return '融资买入';
+		} else if(val == 4) {
+			return '卖券还款';
+		} else if(val == 5) {
+			return '撤单';
+		} else if(val == 6) {
+			return '查询资金';
+		} else if(val == 7) {
+			return '查询持仓';
+		} else if(val == 8) {
+			return '当日委托';
+		} else if(val == 9) {
+			return '当日成交';
+		} else if(val == 13) {
+			return '信用资产';
+		}
+		return val;
+	}
+	function formatTstRslt_(val,row,index) {
+		if(val == null) {
+			return '';
+		}
+		if(val == 0) {
+			return '测试通过';
+		} else {
+			return '测试失败';
+		}
+	}
+</script>

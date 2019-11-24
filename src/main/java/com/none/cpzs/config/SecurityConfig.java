@@ -49,10 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 			.antMatchers(
-					"/",
+					"/*",
 					"/login",
 					"/*.html",
+					"/*.html",
 					"/favicon.ico",
+					"/**/*.html",
 					"/**/*.html",
 					"/**/*.css",
 					"/**/*.js",
@@ -66,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll()
 			.anyRequest()
 			.authenticated();
-		httpSecurity.headers().cacheControl();
+		httpSecurity.headers().frameOptions().disable().cacheControl();
 		httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.exceptionHandling()
 			.accessDeniedHandler(restfulAccessDeniedHandler)

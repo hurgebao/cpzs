@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>操盘助手</title>
+
+	<!-- 加载easyUI中的js和css -->
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js"></script>
+
+	<!-- 扩展验证 -->
+	<script type="text/javascript" src="js/common/easyuiValidate.js"></script>
+
+	<!-- 公共的js -->
+	<script type="text/javascript" src="js/common/acl.js"></script>
+
+	<script type="text/javascript" src="js/common/format.js"></script>
+	<script type="text/javascript" src="js/common/export.js"></script>
+	<script type="text/javascript" src="js/common/dict.js"></script>
+<!--
+    <script type="text/javascript" src="js/model/finalPage.js"></script>
+-->
+	</head>
+	<body style="padding: 10px;">
+	<div id="viewTab" class="easyui-tabs" style="background:#F0F0F0;width:100%;height:1000px">
+
+		<div title="当前持仓查询" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
+			<object type="text/x-scriptlet" data="html/currentPosition.html" width="100%" height="100%"></object>
+		</div>
+		<div title="当日委托查询" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
+			<object type="text/x-scriptlet" data="html/currentEntrust.html" width="100%" height="100%"></object>
+		</div>
+		<div title="历史委托查询" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
+			<object type="text/x-scriptlet" data="html/historyEntrust.html" width="100%" height="100%"></object>
+		</div>
+		<div title="历史持仓查询" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
+			<object type="text/x-scriptlet" data="html/historyPosition.html" width="100%" height="100%"></object>
+		</div>
+	</div>
+</body>
+</html>
