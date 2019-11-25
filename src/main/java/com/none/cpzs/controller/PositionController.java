@@ -3,7 +3,7 @@ package com.none.cpzs.controller;
 import com.none.cpzs.dao2.PositionMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,22 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class PositionController {
     @Autowired
     private PositionMapper positionMapper;
-    @GetMapping("selectTodayEntrust")
+    @PostMapping("selectTodayEntrust")
     @ApiOperation(value="查询当日委托")
     public Object selectTodayEntrust(){
         return positionMapper.selectTodayEntrust();
     }
-    @GetMapping("selectPositionRange")
+    @PostMapping("selectTodayEntrustT1")
+    @ApiOperation(value="查询当日委托")
+    public Object selectTodayEntrustT1(){
+        return positionMapper.selectTodayEntrustT1();
+    }
+    @PostMapping("selectPositionRange")
     @ApiOperation(value="查询机构排名")
     public Object selectPositionRange(){
         return positionMapper.selectPositionRange();
     }
-    @GetMapping("selectPositionRangeByFundPool")
+    @PostMapping("selectPositionRangeByFundPool")
     @ApiOperation(value="查询机构持仓排名")
     public Object selectPositionRangeByFundPool(){
         return positionMapper.selectPositionRangeByFundPool();
     }
-    @GetMapping("selectTradeHistory")
+    @PostMapping("selectTradeHistory")
     @ApiOperation(value="查询交易历史")
     public Object selectTradeHistory(){
         return positionMapper.selectTradeHistory();

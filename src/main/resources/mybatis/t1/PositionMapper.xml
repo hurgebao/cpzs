@@ -102,10 +102,13 @@
     order by a.data_date desc limit 50;
 
     </select>
-    <!---查看某天股票走势与买卖热力图-->
+    <!---查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-          select data_date,action_time,bs_flag,bs_flag_desc,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust order by data_date desc,action_time desc limit 50;
+          select data_date,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510')  order by data_date desc,action_time desc limit 50;
     </select>
-
+    <!---查看某天股票走势与买卖热力图 T1-->
+    <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select entrust_time,account_no,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info where  stock_code in ('002822','300510')  order by entrust_time desc limit 50;
+    </select>
 
 </mapper>
