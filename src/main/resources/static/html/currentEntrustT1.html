@@ -85,7 +85,9 @@
 	    	//自适应列
 	        columns : [ [
 				{title : '委托时间', field : 'entrust_time', align: 'center'},
-	        	{title : '买卖标志', field : 'buy_sell_flag', align: 'center'},
+				{title : '交易账户编号', field : 'account_no', align: 'center'},
+				{title : '交易账户名称', field : 'account_name', align: 'center'},
+				{title : '买卖标志', field : 'buy_sell_flag', align: 'center'},
 				{title : '股票代码', field : 'stock_code', align: 'center'},
 				{title : '股票名称', field : 'stock_name', align: 'center'},
 				{title : '委托数量', field : 'entrust_num', align: 'right'},
@@ -94,6 +96,7 @@
 				{title : '成交价格', field : 'deal_price', align: 'right'},
 				{title : '成交数量', field : 'deal_num', align: 'right'},
 				{title : '委托编号', field : 'securities_trader_entrust_no', align: 'center'},
+				{title : '源系统代码', field : 'source_sys_code', align: 'center'},
 			]],
 			rowStyler:function(index,row){
 				return getColorBuySellFlag(row);

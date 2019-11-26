@@ -81,7 +81,7 @@
         sum(ifnull(available_sell_volume,0)) as enable,
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price
         from tcdb.t_securities_trader_hold
-        where stock_code='002822'   and fund_pool_code=1621 group by data_date
+        where stock_code ='002822'   and fund_pool_code=1621 group by data_date
     ) a
     left join
     (
@@ -99,16 +99,16 @@
         group by tmp.data_date
     ) b
     on a.data_date=b.data_date
-    order by a.data_date desc limit 50;
+    order by a.data_date desc ;
 
     </select>
     <!---查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-          select data_date,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510')  order by data_date desc,action_time desc limit 50;
+          select data_date,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510')  order by data_date desc,action_time desc limit 100;
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select entrust_time,account_no,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info where  stock_code in ('002822','300510')  order by entrust_time desc limit 50;
+        select entrust_time,account_no,account_name,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info where  stock_code in ('002822','300510')  order by entrust_time desc limit 100;
     </select>
 
 </mapper>
