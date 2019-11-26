@@ -42,6 +42,7 @@
     (
         select
         stock_code,
+        fund_pool_code,
         max(stock_name) as stock_name,
         sum(ifnull(recent_market_value,0)) as recent_market_value,
         sum(ifnull(total_volume,0)) as total_volume,
@@ -55,16 +56,17 @@
     (
         select
         tmp.stock_code,
+        tmp.fund_pool_code,
         max(tmp.stock_name) as stock_name,
         sum(ifnull(tmp.buy_num,0)) as buy_num,
         sum(ifnull(tmp.sell_num,0)) as sell_num,
         sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num
         from
         (
-            select stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+            select fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
             from tcdb.t_securities_trader_entrust where data_date=current_date()  and fund_pool_code=1621
         )tmp
-        group by tmp.stock_code
+        group by tmp.stock_code,tmp.fund_pool_code
     ) b
     on a.stock_code=b.stock_code
     order by a.recent_market_value desc,b.total_trade_num desc limit 20;
@@ -109,11 +111,41 @@
     </select>
     <!---查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510','002745')  order by data_date desc,action_time desc limit 200;
+          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510','002745')  order by data_date desc,action_time desc limit 100;
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745')  order by entrust_time desc limit 200;
+        select entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745')  order by entrust_time desc limit 100;
+    </select>
+    <select id="selectTodayEntrustT1All" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 100;
     </select>
 
+    <select id="selectSecAccountTradeRange"  resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+       select
+            tmp.securities_account_no,
+            tmp.data_date,
+            tmp.stock_code,
+            tmp.fund_pool_code,
+            max(stock_name) as stock_name,
+            sum(tmp.buy_num+tmp.sell_num) as total_trade_num,
+            sum(tmp.buy_num) as buy_num ,
+            sum(tmp.sell_num) as sell_num
+            from
+            (
+            select
+                data_date,
+                fund_pool_code,
+                securities_account_no,
+                stock_code,
+                stock_name,
+                case when bs_flag='0' then transaction_vloume else 0 end as buy_num,
+                case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+            from
+            tcdb.t_securities_trader_entrust
+            where stock_code in ('002822','300510')
+            ) tmp
+        group by tmp.securities_account_no,tmp.stock_code,tmp.data_date,tmp.fund_pool_code
+        order by tmp.data_date desc,tmp.stock_code,tmp.securities_account_no desc limit 50;
+    </select>
 </mapper>

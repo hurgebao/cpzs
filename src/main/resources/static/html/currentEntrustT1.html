@@ -91,16 +91,24 @@
 				{title : '买卖标志', field : 'buy_sell_flag', align: 'center'},
 				{title : '股票代码', field : 'stock_code', align: 'center'},
 				{title : '股票名称', field : 'stock_name', align: 'center'},
-				{title : '委托数量', field : 'entrust_num', align: 'right'},
-				{title : '委托价格', field : 'entrust_price', align: 'right'},
+				{title : '委托数量', field : 'entrust_num', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true},
+				{title : '委托价格', field : 'entrust_price', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
 				{title : '委托状态', field : 'entrust_status', align: 'center'},
-				{title : '成交价格', field : 'deal_price', align: 'right'},
-				{title : '成交数量', field : 'deal_num', align: 'right'},
+				{title : '成交价格', field : 'deal_price', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '成交数量', field : 'deal_num', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true},
 				{title : '委托编号', field : 'securities_trader_entrust_no', align: 'center'},
 				{title : '源系统代码', field : 'source_sys_code', align: 'center'},
 			]],
 			rowStyler:function(index,row){
-				return getColorBuySellFlag(row);
+				return getColorBuySellFlag2(row);
 			}
 		});
 	}

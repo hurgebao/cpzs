@@ -23,6 +23,11 @@ public class PositionController {
     public Object selectTodayEntrustT1(){
         return positionMapper.selectTodayEntrustT1();
     }
+    @PostMapping("selectTodayEntrustT1All")
+    @ApiOperation(value="查询当日委托")
+    public Object selectTodayEntrustT1All(){
+        return positionMapper.selectTodayEntrustT1All();
+    }
     @PostMapping("selectPositionRange")
     @ApiOperation(value="查询机构排名")
     public Object selectPositionRange(){
@@ -38,4 +43,11 @@ public class PositionController {
     public Object selectTradeHistory(){
         return positionMapper.selectTradeHistory();
     }
+
+    @PostMapping("selectSecAccountTradeRange")
+    @ApiOperation(value="查询证券账户交易排名")
+    public Object selectSecAccountTradeRange(){
+        return positionMapper.selectSecAccountTradeRange();
+    }
+
 }

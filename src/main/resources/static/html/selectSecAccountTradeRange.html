@@ -25,9 +25,9 @@
 			<td><input class="easyui-textbox" id="re_securitiesAccountNo" name="re_securitiesAccountNo" data-options="prompt:'证券账户名称'" style="width: 120px;"/></td>
 			<td><input class="easyui-numberbox" id="re_fundPoolCode" name="re_fundPoolCode" data-options="prompt:'资金池编号'" style="width: 120px;"/></td>
 			<td><select class="easyui-combobox" id="re_systemBelong" name="re_systemBelong" data-options="prompt:'所属系统',panelHeight:100,value:''" style="width: 120px;">
-					<option value="0">T1</option>
-					<option value="1">WF</option>
-				</select>
+				<option value="0">T1</option>
+				<option value="1">WF</option>
+			</select>
 			</td>
 			<td><input  id="query_reDate" type= "text" class= "easyui-datebox" data-options="prompt:'数据日期'" style="width: 120px;"/></td>
 			<td><a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="re_search();">搜索</a></td>
@@ -36,9 +36,9 @@
 	</table>
 </div>
 <!-- 测试结果信息列表-->
-<table id="datagrid_data" border="0" cellpadding="0" cellspacing="0" width="100%" height="550px">
+<table id="datagrid_data" border="0" cellpadding="0" cellspacing="0" width="100%" height="1000px">
 	<thead id="datagrid_data1">
-		<tr align="center"></tr>
+	<tr align="center"></tr>
 	</thead>
 </table>
 <script type="text/javascript">
@@ -54,60 +54,47 @@
 		//	sysb_ = 0;
 		//}
 		var data_ = {securitiesAccountNo : $('#re_securitiesAccountNo').numberbox('getValue'),
-				fundPoolCode : $('#re_fundPoolCode').numberbox('getValue'),
-				systemBelong : sysb_};
+			fundPoolCode : $('#re_fundPoolCode').numberbox('getValue'),
+			systemBelong : sysb_};
 		var query_date = $('#query_reDate').datebox('getValue');
 		if(query_date != '') {
 			data_.testDate = new Date(query_date);
 		}
 		$('#datagrid_data').datagrid({
-			url:  '/selectPositionRangeByFundPool',
+			url:  '/selectSecAccountTradeRange',
 			queryParams : data_,
-	        singleSelect: true,
-	        striped : true,
-	        fitColumns : false,
-	        border : false,
-	        showFooter: false,
-	        idField : 'id',
-	        rownumbers : true,
-	        pagination : true,
-	        pageSize : 20,
-	        pagePosition : 'bottom',
-	        rowStyler:function(index,row){  //没有对账的   设置字体颜色
-	    		if (row.test_status != 0){
-	    			return 'color:#FF0000;';
-	    		} 
-	    	},
-	    	//自适应列
-	        columns : [ [
+			singleSelect: true,
+			striped : true,
+			fitColumns : false,
+			border : false,
+			showFooter: false,
+			idField : 'id',
+			rownumbers : true,
+			pagination : true,
+			pageSize : 20,
+			pagePosition : 'bottom',
+			rowStyler:function(index,row){  //没有对账的   设置字体颜色
+				if (row.test_status != 0){
+					return 'color:#FF0000;';
+				}
+			},
+			//自适应列
+			columns : [ [
+				{title : '交易日期', field : 'data_date', align: 'center'},
+				{title : '股票代码', field : 'stock_code', align: 'center'},
+				{title : '股票名称', field : 'stock_name', align: 'center'},
+				{title : '证券账户编号', field : 'securities_account_no', align: 'center'},
 				{title : '资金池', field : 'fund_pool_code', align: 'center'},
-	        	{title : '股票代码', field : 'stock_code', align: 'center'},
-	        	{title : '股票名称', field : 'stock_name', align: 'center'},
-	        	{title : '当前市值', field : 'recent_market_value', align: 'right',formatter:function(value,row,index){
-					return formatMoney2(value);
-				},sortable:true},
-	        	{title : '总持仓', field : 'total_volume', align: 'right',formatter:function(value,row,index){
+				{title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
-	            {title : '可卖数量', field : 'available_sell_volume', align: 'right',formatter:function(value,row,index){
+				{title : '当日买入数量', field : 'buy_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
-	            {title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
-					return formatMoney2(value);
-				},sortable:true},
-	            {title : '当前价', field : 'current_price', align: 'right',formatter:function(value,row,index){
-					return formatMoney2(value);
-				},sortable:true},
-	            {title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
-					return formatNumber(value);
-				},sortable:true},
-	            {title : '当日买入数量', field : 'buy_num', align: 'right',formatter:function(value,row,index){
-					return formatNumber(value);
-				},sortable:true},
-	            {title : '当日卖出数量', field : 'sell_num', align: 'right',formatter:function(value,row,index){
+				{title : '当日卖出数量', field : 'sell_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true}
-	            ]]
+			]]
 		});
 	}
 </script>

@@ -91,11 +91,19 @@
 	        	{title : '买卖标志描述', field : 'bs_flag_desc', align: 'center'},
 				{title : '股票代码', field : 'stock_code', align: 'center'},
 				{title : '股票名称', field : 'stock_name', align: 'center'},
-				{title : '委托数量', field : 'order_volume', align: 'right'},
-				{title : '委托价格', field : 'order_price', align: 'right'},
+				{title : '委托数量', field : 'order_volume', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true},
+				{title : '委托价格', field : 'order_price', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
 				{title : '委托状态', field : 'status_desc', align: 'center'},
-				{title : '成交价格', field : 'transaction_vloume', align: 'right'},
-				{title : '成交数量', field : 'transaction_price', align: 'right'},
+				{title : '成交价格', field : 'transaction_vloume', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '成交数量', field : 'transaction_price', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true},
 				{title : '委托编号', field : 'order_no', align: 'center'},
 			]],
 			rowStyler:function(index,row){
