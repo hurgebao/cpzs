@@ -50,4 +50,11 @@ public class PositionController {
         return positionMapper.selectSecAccountTradeRange();
     }
 
+
+    @PostMapping("selectCurrentPositionT1")
+    @ApiOperation(value="查询当日持仓")
+    public Object selectCurrentPositionT1(){
+        return positionMapper.selectCurrentPositionT1();
+    }
+
 }

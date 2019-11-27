@@ -148,4 +148,24 @@
         group by tmp.securities_account_no,tmp.stock_code,tmp.data_date,tmp.fund_pool_code
         order by tmp.data_date desc,tmp.stock_code,tmp.securities_account_no desc limit 50;
     </select>
+    <select id="selectCurrentPositionT1"   resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+       select
+            fcpc.account_no, acc.account_name,fcpc.stock_code,
+            max(fcpc.stock_name) as stock_name,
+            sum(fcpc.last_remain_num) as last_remain_num,
+            sum(fcpc.current_enable_num) as current_enable_num,
+            sum(fcpc.current_remain_num) as current_remain_num,
+            sum(fcpc.current_in_num)           as   current_in_num,
+            sum(fcpc.current_out_freeze_num)   as   current_out_freeze_num,
+            sum(fcpc.current_out_complete_num) as   current_out_complete_num  ,
+            sum(fcpc.total_buy_amt*fcpc.position_change_ratio)            as   total_buy_amt,
+            sum(fcpc.total_buy_amt*fcpc.position_change_ratio)/sum(current_remain_num)   as   cost_price
+            from t_fund_chnl_position_current fcpc
+            inner join t_account acc on fcpc.account_no=acc.account_no
+            where acc.account_status!=5
+            and fcpc.fund_pool_code =1621 and fcpc.stock_code in ('002822','300510','002745')
+        group by fcpc.account_no, acc.account_name,fcpc.stock_code
+        order by fcpc.stock_code asc;
+
+    </select>
 </mapper>

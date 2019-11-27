@@ -11,6 +11,6 @@ public interface PositionMapper {
     List<Map<String,Object>> selectPositionRangeByFundPool();
     List<Map<String,Object>> selectTradeHistory();
     List<Map<String,Object>> selectSecAccountTradeRange();
-
+    List<Map<String,Object>> selectCurrentPositionT1();
 
 }
