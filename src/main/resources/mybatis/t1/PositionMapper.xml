@@ -115,10 +115,10 @@
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745')  order by entrust_time desc limit 100;
+        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745')  order by entrust_time desc limit 100;
     </select>
     <select id="selectTodayEntrustT1All" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 100;
+        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 100;
     </select>
 
     <select id="selectSecAccountTradeRange"  resultType="java.util.HashMap"  parameterType="java.util.HashMap">
