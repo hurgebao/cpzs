@@ -195,3 +195,10 @@
 	  
 	  return value > 0 ? "red" : ((value == 0 || value == null) ? "black" : "green");
   }
+	function getColorByProfit(profitLossAmt){
+		if (profitLossAmt>0 ){
+			return 'color:red;';
+		}else if(profitLossAmt<0){
+			return 'color:blue;';
+		}
+	}
