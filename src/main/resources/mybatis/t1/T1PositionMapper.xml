@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.none.cpzs.dao2.T1PositionMapper">
+
+
+    <select id="selectT1CurrentEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code,entrust_type  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 200;
+    </select>
+
+    <select id="selectT1CurrentPosition"   resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+       select
+            fcpc.stock_code,
+            max(fcpc.stock_name) as stock_name,
+            sum(fcpc.last_remain_num) as last_remain_num,
+            sum(fcpc.current_enable_num) as current_enable_num,
+            sum(fcpc.current_remain_num) as current_remain_num,
+            sum(fcpc.current_in_num)           as   current_in_num,
+            sum(fcpc.current_out_freeze_num)   as   current_out_freeze_num,
+            sum(fcpc.current_out_complete_num) as   current_out_complete_num  ,
+            sum(fcpc.total_buy_amt)            as   total_buy_amt,
+            sum(fcpc.total_buy_amt)/sum(current_remain_num)   as   cost_price
+            from t_fund_chnl_position_current fcpc
+            inner join t_account acc on fcpc.account_no=acc.account_no
+            where acc.account_status!=5
+        group by fcpc.stock_code
+        order by fcpc.stock_code asc limit 100;
+
+    </select>
+    <select id="selectT1HistoryPosition"   resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+        select
+        fcpc.tran_date,fcpc.stock_code,
+        max(fcpc.current_close_price) as current_price,
+        max(fcpc.stock_name) as stock_name,
+        sum(fcpc.last_remain_num) as last_remain_num,
+        sum(fcpc.current_position_num) as current_remain_num,
+        sum(fcpc.current_in_num)           as   current_in_num,
+        sum(fcpc.current_out_num) as   current_out_num  ,
+        sum(fcpc.total_buy_amt)            as   total_buy_amt,
+        sum(fcpc.profit_loss_amt) as profit_loss_amt,
+        sum(fcpc.profit_loss_amt)/sum(fcpc.total_buy_amt)*100 as profit_loss_precent,
+        sum(fcpc.current_market_value) as current_market_value,
+        sum(fcpc.total_buy_amt)/sum(current_position_num)   as   cost_price
+        from t_fund_chnl_position_history fcpc
+        inner join t_account acc on fcpc.account_no=acc.account_no
+        where acc.account_status!=5
+        group by fcpc.tran_date,fcpc.stock_code
+        order by fcpc.tran_date desc,sum(fcpc.current_position_num) desc,fcpc.stock_code asc limit 100;
+
+    </select>
+</mapper>

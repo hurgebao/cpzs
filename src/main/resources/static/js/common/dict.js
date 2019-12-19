@@ -158,11 +158,11 @@ function getColorBuySellFlag(row){
 
 
 function getColorBuySellFlag2(row){
-	if(row.entrustType=='1'){
+	if(row.entrust_type=='1'){
 		return 'color:gray;';
-	}else if ("02467BCEFKN".indexOf(row.buySellFlag)>-1){
+	}else if ("02467BCEFKN".indexOf(row.buy_sell_flag)>-1){
 		return 'color:red;';
-	}else if("1358ADJGOP".indexOf(row.buySellFlag)>-1){
+	}else if("1358ADJGOP".indexOf(row.buy_sell_flag)>-1){
 		return 'color:blue;';
 	}
 }
