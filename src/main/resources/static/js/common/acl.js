@@ -486,3 +486,11 @@ function moneyFormat(value){
 	if(value == null) return "0.00";
 	return (parseFloat(value).toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
 }
+
+$.ajaxSetup({
+	beforeSend: function (xhr) {
+		var authheader=localStorage.getItem("authHeader") ;
+		console.log("authheader:"+authheader);
+		xhr.setRequestHeader("token", authheader);
+	},
+});

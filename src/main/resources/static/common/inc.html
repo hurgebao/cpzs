@@ -20,7 +20,17 @@
 <script type="text/javascript" src="../js/common/dict.js"></script>
 
 
-
+<script type="text/javascript">
+    var authheader=sessionStorage.getItem("authHeader") ;
+    console.log("authheader:"+authheader);
+    if(authheader){
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("token", authheader);
+            },
+        });
+    }
+</script>
 
 
 
