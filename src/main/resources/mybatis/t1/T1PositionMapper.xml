@@ -4,7 +4,7 @@
 
 
     <select id="selectT1CurrentEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code,entrust_type  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 200;
+        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code,entrust_type  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 200;
     </select>
 
     <select id="selectT1CurrentPosition"   resultType="java.util.HashMap"  parameterType="java.util.HashMap">
