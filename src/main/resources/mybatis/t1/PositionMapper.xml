@@ -50,7 +50,7 @@
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
         max(current_price) as current_price
         from tcdb.t_securities_trader_hold
-        where data_date=current_date() and fund_pool_code=1621  group by stock_code
+        where data_date=current_date() and fund_pool_code=1621   group by stock_code
     ) a
     left join
     (
@@ -83,10 +83,10 @@
         max(current_price) as current_price,
         sum(ifnull(recent_market_value,0)) as market_value  ,
         sum(ifnull(total_volume,0)) as total_volume,
-        sum(ifnull(available_sell_volume,0)) as enable,
+        sum(ifnull(available_sell_volume,0)) as available_sell_volume,
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price
         from tcdb.t_securities_trader_hold
-        where  stock_code  in ('002822','300510','002745')   and fund_pool_code=1621 group by data_date,fund_pool_code,stock_code
+        where  stock_code  in ('002822','300510','002745','002131','300042')   and fund_pool_code=1621 group by data_date,fund_pool_code,stock_code
     ) a
     left join
     (
@@ -101,24 +101,24 @@
         from
         (
             select data_date,fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num from tcdb.t_securities_trader_entrust
-            where stock_code  in ('002822','300510','002745') and fund_pool_code=1621
+            where stock_code  in ('002822','300510','002745','002131','300042') and fund_pool_code=1621
         )tmp
         group by tmp.data_date,tmp.fund_pool_code,tmp.stock_code
     ) b
     on a.data_date=b.data_date and a.fund_pool_code=b.fund_pool_code and a.stock_code=b.stock_code
-    order by a.data_date desc ;
+    order by a.data_date desc,a.stock_code asc ;
 
     </select>
     <!---查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510','002745')  order by data_date desc,action_time desc limit 100;
+          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where bs_flag in ('0','1') and stock_code in ('002822','300510','002745','002131','300042')  order by data_date desc,action_time desc limit 100;
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745')  order by entrust_time desc limit 100;
+        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no where  stock_code in ('002822','300510','002745','002131','300042')  order by entrust_time desc limit 100;
     </select>
     <select id="selectTodayEntrustT1All" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-        select date_format(entrust_time,'%H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 100;
+        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code  from tcdb.t_trade_entrust_info tei inner join tcdb.t_account acc on tei.account_no=acc.account_no   order by entrust_time desc limit 100;
     </select>
 
     <select id="selectSecAccountTradeRange"  resultType="java.util.HashMap"  parameterType="java.util.HashMap">
@@ -143,7 +143,7 @@
                 case when bs_flag='1' then transaction_vloume else 0 end as sell_num
             from
             tcdb.t_securities_trader_entrust
-            where stock_code in ('002822','300510')
+            where stock_code in ('002822','300510','002745','002131','300042')
             ) tmp
         group by tmp.securities_account_no,tmp.stock_code,tmp.data_date,tmp.fund_pool_code
         order by tmp.data_date desc,tmp.stock_code,tmp.securities_account_no desc limit 50;
@@ -163,7 +163,7 @@
             from t_fund_chnl_position_current fcpc
             inner join t_account acc on fcpc.account_no=acc.account_no
             where acc.account_status!=5
-            and fcpc.fund_pool_code =1621 and fcpc.stock_code in ('002822','300510','002745')
+            and fcpc.fund_pool_code =1621 and fcpc.stock_code in ('002822','300510','002745','002131','300042')
         group by fcpc.account_no, acc.account_name,fcpc.stock_code
         order by fcpc.stock_code asc;
 
