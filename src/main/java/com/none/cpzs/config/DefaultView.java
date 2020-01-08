@@ -8,17 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Created by shi on 2019/12/9.
  */
-@Configuration
+//@Configuration
 public class DefaultView  implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry)
     {
 
-        registry.addViewController("/").setViewName("forward:/login.html");
-
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-
-        WebMvcConfigurer.super.addViewControllers(registry);
+//        registry.addViewController("/").setViewName("forward:/login.html");
+//
+//        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+//
+//        WebMvcConfigurer.super.addViewControllers(registry);
 
     }
 }
