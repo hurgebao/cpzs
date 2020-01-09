@@ -22,14 +22,13 @@
 	<table>
 		<tr></tr>
 		<tr>
-			<td><input class="easyui-textbox" id="re_securitiesAccountNo" name="re_securitiesAccountNo" data-options="prompt:'证券账户名称'" style="width: 120px;"/></td>
-			<td><input class="easyui-numberbox" id="re_fundPoolCode" name="re_fundPoolCode" data-options="prompt:'资金池编号'" style="width: 120px;"/></td>
-			<td><select class="easyui-combobox" id="re_systemBelong" name="re_systemBelong" data-options="prompt:'所属系统',panelHeight:100,value:''" style="width: 120px;">
+			<td><input class="easyui-textbox" id="stock_code" name="stock_code" data-options="prompt:'股票代码'" style="width: 120px;"/></td>
+			<td><input class="easyui-textbox" id="stock_name" name="stock_name" data-options="prompt:'股票名称'" style="width: 120px;"/></td>
+			<td><select class="easyui-combobox" id="org_code" name="org_code" data-options="prompt:'所属系统',panelHeight:100,value:''" style="width: 120px;">
 					<option value="0">T1</option>
 					<option value="1">WF</option>
 				</select>
 			</td>
-			<td><input  id="query_reDate" type= "text" class= "easyui-datebox" data-options="prompt:'数据日期'" style="width: 120px;"/></td>
 			<td><a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="re_search();">搜索</a></td>
 			<td><a class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="re_clean();">重置</a></td>
 		</tr>
@@ -43,10 +42,9 @@
 </table>
 <script type="text/javascript">
 	function re_clean() {
-		$('#re_securitiesAccountNo').numberbox('reset');
-		$('#re_fundPoolCode').numberbox('reset');
-		$('#re_systemBelong').combobox('reset');
-		$('#query_reDate').datebox('reset');
+		$('#stock_code').textbox('reset');
+		$('#stock_name').textbox('reset');
+		$('#org_code').combobox('reset');
 	}
 	$(function(){
 		re_search();
@@ -57,13 +55,9 @@
 		//if(!sysb_) {
 		//	sysb_ = 0;
 		//}
-		var data_ = {securitiesAccountNo : $('#re_securitiesAccountNo').numberbox('getValue'),
-				fundPoolCode : $('#re_fundPoolCode').numberbox('getValue'),
-				systemBelong : sysb_};
-		var query_date = $('#query_reDate').datebox('getValue');
-		if(query_date != '') {
-			data_.testDate = new Date(query_date);
-		}
+		var data_ = {stock_code : $('#stock_code').numberbox('getValue'),
+				stock_name : $('#stock_name').numberbox('getValue'),
+			org_code : sysb_};
 		$('#datagrid_data').datagrid({
 			url:  '/selectT1CurrentEntrust',
 			queryParams : data_,
