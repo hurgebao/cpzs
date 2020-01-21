@@ -5,13 +5,14 @@ use cpzsdb;
 create table user_info(
    id int PRIMARY key auto_increment COMMENT '主键',
    mobile_no varchar(30) NOT NULL COMMENT '手机号',
-   user_name varchar(30) NOT NULL COMMENT '用户姓名',
+   user_name varchar(30) UNIQUE NOT NULL COMMENT '用户姓名',
    password  varchar(30) NOT NULL COMMENT '密码',
    status varchar(30) NOT NULL COMMENT '状态:0正常 1停用 ',
    remark varchar(30)  COMMENT '备注',
    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间'
 ) COMMENT '用户信息表';
+INSERT  INTO cpzsdb.user_info (mobile_no,user_name,password,status)values ('15811010314','15811010314','123456','0');
 
 create table my_focus_stock(
    id int PRIMARY key auto_increment COMMENT '主键',

@@ -236,17 +236,21 @@
             $('#errMsg').html('用户名和密码不能为空');
             return;
         }
-        var data_ = {username : unm_,password : pwd_};
+        var userInfo=new Object();
+        userInfo.userName=unm_;
+        userInfo.password=pwd_;
         $.ajax({
-            url : '${ctx}' + '/testFinal/doLogin',
-            data : data_,
+            url : '/doLogin',
+            data:JSON.stringify(userInfo),
             type : "POST",
             cache : false,
+            dataType:'json',
+            contentType:'application/json;charset=UTF-8',
             success : function(data) {
-                data = $.parseJSON(data);
-                if(data.loginStatus == 0) {
-                    window.location.href = 'finalPage';
-                } else if(data.loginStatus == -1) {
+                alert(JSON.stringify(data));
+                if(data.returnCode == '0000') {
+                    window.location.href = 'T1.html';
+                } else if(data.returnCode == -1) {
                     $('#errMsg').html(data.errMsg);
                 }
             }

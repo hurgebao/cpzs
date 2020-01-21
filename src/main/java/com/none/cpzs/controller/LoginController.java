@@ -1,8 +1,12 @@
 package com.none.cpzs.controller;
 
+import com.none.cpzs.annotation.FileLog;
 import com.none.cpzs.common.CodeConstant;
+import com.none.cpzs.common.Constants;
 import com.none.cpzs.dao1.UserInfoMapper;
 import com.none.cpzs.po.UserInfo;
+import com.none.cpzs.service.UmsAdminService;
+import com.none.cpzs.utils.SessionUtil;
 import com.none.cpzs.vo.LoginResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,16 +25,18 @@ import javax.xml.ws.Response;
 @Api(tags="登陆登出")
 public class LoginController {
     @Autowired
-    private UserInfoMapper userInfoMapper;
-//    @PostMapping("login")
-//    @ApiOperation(value="登陆")
-//    @ResponseBody
-//    public LoginResponse login(@RequestBody UserInfo userInfo){
-//        LoginResponse loginResponse=new LoginResponse();
-//        loginResponse.setReturnCode(CodeConstant.SUCCESS);
-//        loginResponse.setReturnMsg("登录成功");
-//        return loginResponse;
-//    }
+    private UmsAdminService umsAdminService;
+    @RequestMapping("doLogin")
+    @ApiOperation(value="登陆")
+    @ResponseBody
+    @FileLog
+    public LoginResponse login(@RequestBody UserInfo userInfo){
+        LoginResponse loginResponse= umsAdminService.login(userInfo.getUserName(),userInfo.getPassword());
+        if(CodeConstant.SUCCESS.equals(loginResponse.getReturnCode())){
+            SessionUtil.getSession().setAttribute(Constants.SESSION_USER, loginResponse.getUserInfo());
+        }
+        return loginResponse;
+    }
 
     @RequestMapping("/ll")
     public ModelAndView toLogin(){

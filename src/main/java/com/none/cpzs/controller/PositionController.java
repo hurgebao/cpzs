@@ -1,5 +1,6 @@
 package com.none.cpzs.controller;
 
+import com.none.cpzs.annotation.FileLog;
 import com.none.cpzs.dao2.PositionMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PositionController {
     @Autowired
     private PositionMapper positionMapper;
+    @FileLog
     @PostMapping("selectTodayEntrust")
     @ApiOperation(value="查询当日委托")
     public Object selectTodayEntrust(){
         return positionMapper.selectTodayEntrust();
     }
+    @FileLog
     @PostMapping("selectTodayEntrustT1")
     @ApiOperation(value="查询当日委托")
     public Object selectTodayEntrustT1(){

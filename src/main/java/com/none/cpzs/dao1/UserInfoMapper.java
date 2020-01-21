@@ -31,6 +31,12 @@ public interface UserInfoMapper {
      *
      * @mbggenerated 2019-11-15
      */
+    UserInfo selectByUsername(String username);
+
+    /**
+     *
+     * @mbggenerated 2019-11-15
+     */
     int updateByPrimaryKeySelective(UserInfo record);
 
     /**
