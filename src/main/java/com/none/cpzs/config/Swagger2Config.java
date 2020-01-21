@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@Configuration
 //@EnableSwagger2
 public class Swagger2Config {
-	/*@Bean
+	@Bean
 	public Docket createRestApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
@@ -68,5 +68,5 @@ public class Swagger2Config {
 				.description("cmdb-gateway")
 				.version("1.0")
 				.build();
-	}*/
+	}
 }
