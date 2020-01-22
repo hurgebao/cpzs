@@ -7,7 +7,9 @@ import javax.servlet.http.HttpSession;
 import com.none.cpzs.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+@Component
 public class SessionInterceptor extends HandlerInterceptorAdapter {
 	private static Logger logger= LoggerFactory.getLogger(SessionInterceptor.class);
 

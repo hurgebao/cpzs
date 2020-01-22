@@ -181,3 +181,12 @@ having count(*)>1
 ;
 
 select action_time,securities_account_no,bs_flag,bs_flag_desc,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price  from tcdb.t_securities_trader_entrust where stock_code='002822' and data_date='2019-11-22' and fund_pool_code=1621  and bs_flag in ('0','1') order by action_time asc ;
+
+
+select stock_code,max(stock_name),sum(deal_amt),sum(case when buy_sell_flag='0' then deal_amt else 0 end) as buy_amt,sum(case when buy_sell_flag='1' then deal_amt else 0 end) as sell_amt from tcdb.t_trade_entrust_info group by stock_code order by sum(deal_amt) desc limit 10;
+
+select stock_code,max(stock_name),sum(deal_amt),sum(case when buy_sell_flag='0' then deal_amt else 0 end) as buy_amt,sum(case when buy_sell_flag='1' then deal_amt else 0 end) as sell_amt from tcdb.t_trade_entrust_history where entrust_date=current_date() group by stock_code order by sum(deal_amt) desc limit 10;
+
+
+
+select stock_code,max(stock_name),sum(deal_amt) from tcdb.t_trade_entrust_info  group by stock_code order by sum(deal_amt) desc limit 10;

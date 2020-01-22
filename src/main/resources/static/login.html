@@ -249,7 +249,7 @@
             success : function(data) {
                 alert(JSON.stringify(data));
                 if(data.returnCode == '0000') {
-                    window.location.href = 'T1.html';
+                    window.location.href = '/T1.html';
                 } else if(data.returnCode == -1) {
                     $('#errMsg').html(data.errMsg);
                 }

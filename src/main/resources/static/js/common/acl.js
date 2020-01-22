@@ -490,7 +490,12 @@ function moneyFormat(value){
 $.ajaxSetup({
 	beforeSend: function (xhr) {
 		var authheader=localStorage.getItem("authHeader") ;
-		console.log("authheader:"+authheader);
 		xhr.setRequestHeader("token", authheader);
 	},
+	complete : function(XMLHttpRequest, textStatus) {
+		var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus"); // 通过XMLHttpRequest取得响应头，sessionstatus，
+		if (sessionstatus == "timeout") {
+			window.location.href="/login.html";
+		}
+	}
 });

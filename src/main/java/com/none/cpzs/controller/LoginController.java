@@ -34,6 +34,7 @@ public class LoginController {
         LoginResponse loginResponse= umsAdminService.login(userInfo.getUserName(),userInfo.getPassword());
         if(CodeConstant.SUCCESS.equals(loginResponse.getReturnCode())){
             SessionUtil.getSession().setAttribute(Constants.SESSION_USER, loginResponse.getUserInfo());
+            loginResponse.setUserInfo(null);
         }
         return loginResponse;
     }
