@@ -1,6 +1,9 @@
 package com.none.cpzs.dao1;
 
 import com.none.cpzs.po.MyFocusFundPool;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface MyFocusFundPoolMapper {
     /**
@@ -38,4 +41,8 @@ public interface MyFocusFundPoolMapper {
      * @mbggenerated 2019-11-15
      */
     int updateByPrimaryKey(MyFocusFundPool record);
+
+    List<MyFocusFundPool> selectByUserId(int userId);
+
+    int deleteByUserIdAndFundPool(@Param("userId")Integer userId, @Param("fundPoolCode")Long fundPoolCode);
 }

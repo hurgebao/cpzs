@@ -29,34 +29,153 @@
 -->
 		<style type="text/css">
 			td.title{
-				background-color: #b7d2ff;
+				/*background-color: #b7d2ff;*/
 				font-family: "微软雅黑";
-				font-size: 20px;
+				font-size: 16px;
 				padding: 2px;
 			}
-			td span{
-				padding: 2px 01px;
-				background-color: #b7d2ff;
+			td a{
+				padding: 2px 10px;
+				/*background-color: #b7d2ff;*/
 			}
 		</style>
+		<script type="application/javascript">
+			function getTab(){
+				var pp = $('#viewTab').tabs('getSelected');
+				var tab = pp.panel('options').tab;
+				alert(tab);
+			}
+			function initCondition(){
+				$.ajax({
+					url : '/getCondition',
+					type : "GET",
+					cache : false,
+					dataType:'json',
+					contentType:'application/json;charset=UTF-8',
+					success : function(data) {
+						var stockLabel="";
+						var accountLabel="";
+						var fundPoolLabel="";
+
+						for(var i=0;i<data.stockCodeList.length;i++){
+							stockLabel+=('<label><input type="checkbox" onchange="checkb(1,\''+data.stockCodeList[i].stockCode+'\')" />'+data.stockCodeList[i].stockCode+'-'+data.stockCodeList[i].stockName+'</label>');
+						}
+						for(var i=0;i<data.fundPoolCodeList.length;i++){
+							fundPoolLabel+=('<label><input type="checkbox" onchange="checkb(2,'+data.fundPoolCodeList[i].fundPoolCode+')" />'+data.fundPoolCodeList[i].fundPoolCode+'</label>');
+
+						}
+						for(var i=0;i<data.accountNoList.length;i++) {
+							accountLabel += ('<label><input type="checkbox" onchange="checkb(3,'+data.accountNoList[i].accountNo+')" />'+data.accountNoList[i].accountNo+'</label>');
+						}
+						$("#stockCodeList").html(stockLabel);
+						$("#fundPoolCodeList").html(fundPoolLabel);
+						$("#accountNoList").html(accountLabel);
+					}
+				});
+			}
+			function checkb(checkType,value){
+				alert(value);
+			}
+			function showStockInfo(){
+				var stocknameEL=$("#content").val();
+				$("#stockName").html("");
+				if(stocknameEL !=null && stocknameEL.length==6){
+					$.ajax({
+						type : 'GET',
+						async : true,
+						url: 'http://47.95.204.52:8083/stockIndex/'+stocknameEL,
+						success: function(data) {
+							var pnode="";
+							for(var i=0;i<data.length;i++){
+								pnode=data[i].stock_name;
+							}
+							$("#stockName").html(pnode);
+						},
+						error: function (message) {
+							alert("后台异常:"+message);
+						}
+					});
+				}
+			}
+			function addFocus(){
+				var operatorType=$("#operatorType").val();
+				var content=$("#content").val();
+				var stockName=$("#stockName").text();
+				$.ajax({
+					url : '/addFocus',
+					type : "POST",
+					cache : false,
+//					dataType:'json',
+					data:{'operatorType':operatorType,'content':content,'stockName':stockName},
+//					contentType:'application/json;charset=UTF-8',
+					success : function(data) {
+						if (data.returnCode == '0000') {
+							initCondition();
+						}else{
+							alert(data.returnMsg);
+						}
+					}
+				});
+			}
+			function deleteFocus(){
+				var operatorType=$("#operatorType").val();
+				var content=$("#content").val();
+				$.ajax({
+					url : '/deleteFocus',
+					type : "POST",
+					cache : false,
+//					dataType:'json',
+					data:{'operatorType':operatorType,'content':content},
+//					contentType:'application/json;charset=UTF-8',
+					success : function(data) {
+						if (data.returnCode == '0000') {
+							initCondition();
+						}else{
+							alert(data.returnMsg);
+						}
+					}
+				});
+			}
+			function selectAll(){
+				$("[type='checkbox']").prop("checked",true);
+			}
+			function disSelectAll(){
+				$("[type='checkbox']").removeAttr("checked");
+			}
+			$(function(){
+				initCondition();
+			})
+
+		</script>
 	</head>
 	<body style="padding: 10px;">
 	<div>
 		<table>
 			<tr>
-				<td class="title">股票代码</td><td><a href="#">601288-农业银行</a><a href="#">002822-中装建设</a><a href="#">002131-利欧股份</a></td>
+				<td class="title">股票代码:</td><td id="stockCodeList"></td>
 			</tr>
 			<tr>
-				<td class="title">机构</td><td><a href="#">1621</a><a href="#">7371</a></td>
+				<td class="title">机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构:</td><td id="fundPoolCodeList"></td>
 			</tr>
 			<tr>
-				<td class="title">交易账号</td><td><a href="#">600001</a><a href="#">600002</a><a href="#">600003</a><a href="#">600004</a></td>
+				<td class="title">交易账号:</td><td id="accountNoList"></td>
+			</tr>
+			<tr>
+				<td class="title">查询条件:</td>
+				<td>
+					<select id="operatorType"><option value="stock">股票</option><option value="fundPool">资金池</option><option value="account">交易账户</option></select>
+					<input id="content" type="text" onchange="showStockInfo()"/>
+					<span id="stockName" width="80px"></span>
+					<input type="button" value="新增" onclick="addFocus()"/><input type="button" value="删除" onclick="deleteFocus()"/>
+					<input type="button" value="全选" onclick="selectAll()"/><input type="button" value="反选" onclick="disSelectAll()"/>
+
+				</td>
 			</tr>
 		</table>
 	</div>
 	<div id="viewTab" class="easyui-tabs" style="background:#F0F0F0;width:100%;height:1000px">
 
-		<div title="T1当日委托（关注）" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
+		<div title="T1当日委托" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
 			<object type="text/x-scriptlet" data="html/currentEntrustT1.html" width="100%" height="100%"></object>
 		</div>
 		<div title="T1当日持仓" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">

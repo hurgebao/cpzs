@@ -20,9 +20,20 @@
     from my_focus_stock
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from my_focus_stock
+    where user_id = #{id,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from my_focus_stock
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByUserIdAndStock" parameterType="java.util.HashMap" >
+    delete from my_focus_stock
+    where user_id = #{userId} and stock_code=#{stockCode}
   </delete>
   <insert id="insert" parameterType="com.none.cpzs.po.MyFocusStock" >
     insert into my_focus_stock (id, user_id, org_code, 

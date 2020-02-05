@@ -24,6 +24,9 @@ create table my_focus_stock(
    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间'
 ) comment '我关注的股票';
+insert into my_focus_stock (user_id,org_code,stock_code,stock_name,status) values (1,'T1','601288','农业银行','0');
+insert into my_focus_stock (user_id,org_code,stock_code,stock_name,status) values (1,'T1','002822','中装建设','0');
+insert into my_focus_stock (user_id,org_code,stock_code,stock_name,status) values (1,'T1','002131','利欧股份','0');
 
 create table my_focus_fund_pool(
    id int PRIMARY key auto_increment COMMENT '主键',
@@ -34,6 +37,8 @@ create table my_focus_fund_pool(
    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间'
 ) comment '我关注的机构';
+insert into my_focus_fund_pool (user_id,org_code,fund_pool_code,status) values (1,'T1',1621,'0');
+insert into my_focus_fund_pool (user_id,org_code,fund_pool_code,status) values (1,'T1',7371,'0');
 
 create table my_focus_account(
    id int PRIMARY key auto_increment COMMENT '主键',
@@ -44,6 +49,8 @@ create table my_focus_account(
    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间'
 ) comment '我关注的交易账户';
+insert into my_focus_account (user_id,org_code,account_no,status) values (1,'T1',600001,'0');
+insert into my_focus_account (user_id,org_code,account_no,status) values (1,'T1',600002,'0');
 
 
 CREATE  table org_info(
