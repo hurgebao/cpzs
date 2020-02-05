@@ -2,6 +2,7 @@ package com.none.cpzs.controller;
 
 import com.none.cpzs.dao2.PositionMapper;
 import com.none.cpzs.dao2.T1PositionMapper;
+import com.none.cpzs.vo.PageRequest;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +17,17 @@ public class T1PositionController {
     private T1PositionMapper positionMapper;
     @PostMapping("selectT1CurrentEntrust")
     @ApiOperation(value="查询当日委托")
-    public Object selectT1CurrentEntrust(){
+    public Object selectT1CurrentEntrust(PageRequest request){
         return positionMapper.selectT1CurrentEntrust();
     }
     @PostMapping("selectT1CurrentPosition")
     @ApiOperation(value="查询当日持仓")
-    public Object selectT1CurrentPosition(){
+    public Object selectT1CurrentPosition(PageRequest request){
         return positionMapper.selectT1CurrentPosition();
     }
     @PostMapping("selectT1HistoryPosition")
     @ApiOperation(value="查询当日持仓")
-    public Object selectT1HistoryPosition(){
+    public Object selectT1HistoryPosition(PageRequest request){
         return positionMapper.selectT1HistoryPosition();
     }
 }
