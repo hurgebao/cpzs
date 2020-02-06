@@ -43,6 +43,6 @@ public interface MyFocusStockMapper {
     int updateByPrimaryKey(MyFocusStock record);
 
     int deleteByUserIdAndStock(@Param("userId")Integer userId, @Param("stockCode")String stockCode);
-
+    int updateStatusByUserId(@Param("userId")Integer userId,@Param("status")String status);
     List<MyFocusStock> selectByUserId(int userId);
 }

@@ -5,4 +5,6 @@ package com.none.cpzs.common;
  */
 public class Constants {
     public static final String SESSION_USER="USER";
+    public static final String SELECT_CONDITION="SELECT_CONDITION";
+
 }

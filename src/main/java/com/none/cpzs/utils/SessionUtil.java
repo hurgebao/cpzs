@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.none.cpzs.common.Constants;
 import com.none.cpzs.po.UserInfo;
+import com.none.cpzs.vo.SelectCondition;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -35,5 +36,16 @@ public class SessionUtil {
 			return (UserInfo) obj;
 		}
 		return null;
+	}
+	public static SelectCondition getSelect(){
+		HttpSession session = getSession();
+		Object obj = session.getAttribute(Constants.SELECT_CONDITION);
+		if (obj instanceof SelectCondition) {
+			return (SelectCondition) obj;
+		}
+		return null;
+	}
+	public static void setSelect(SelectCondition s){
+		SessionUtil.getSession().setAttribute(Constants.SELECT_CONDITION, s);
 	}
 }

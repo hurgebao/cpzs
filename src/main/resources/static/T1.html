@@ -41,9 +41,10 @@
 		</style>
 		<script type="application/javascript">
 			function getTab(){
-				var pp = $('#viewTab').tabs('getSelected');
-				var tab = pp.panel('options').tab;
-				alert(tab);
+				var tab = $('#viewTab').tabs('getSelected');
+				var index = $('#viewTab').tabs('getTabIndex',tab);
+				$('#viewTab').tabs('select',5);
+				$('#viewTab').tabs('select',index);
 			}
 			function initCondition(){
 				$.ajax({
@@ -58,14 +59,17 @@
 						var fundPoolLabel="";
 
 						for(var i=0;i<data.stockCodeList.length;i++){
-							stockLabel+=('<label><input type="checkbox" onchange="checkb(1,\''+data.stockCodeList[i].stockCode+'\')" />'+data.stockCodeList[i].stockCode+'-'+data.stockCodeList[i].stockName+'</label>');
+							var ischecked=data.stockCodeList[i].status==0?"checked=checked":"";
+							stockLabel+=('<label><input type="checkbox"  '+ischecked+' onchange="checkb(1,this.checked,\''+data.stockCodeList[i].stockCode+'\','+data.stockCodeList[i].id+')" />'+data.stockCodeList[i].stockCode+'-'+data.stockCodeList[i].stockName+'</label>');
 						}
 						for(var i=0;i<data.fundPoolCodeList.length;i++){
-							fundPoolLabel+=('<label><input type="checkbox" onchange="checkb(2,'+data.fundPoolCodeList[i].fundPoolCode+')" />'+data.fundPoolCodeList[i].fundPoolCode+'</label>');
+							var ischecked=data.fundPoolCodeList[i].status==0?"checked=checked":"";
+							fundPoolLabel+=('<label><input type="checkbox" '+ischecked+' onchange="checkb(2,this.checked,'+data.fundPoolCodeList[i].fundPoolCode+','+data.fundPoolCodeList[i].id+')" />'+data.fundPoolCodeList[i].fundPoolCode+'</label>');
 
 						}
 						for(var i=0;i<data.accountNoList.length;i++) {
-							accountLabel += ('<label><input type="checkbox" onchange="checkb(3,'+data.accountNoList[i].accountNo+')" />'+data.accountNoList[i].accountNo+'</label>');
+							var ischecked=data.accountNoList[i].status==0?"checked=checked":"";
+							accountLabel += ('<label><input type="checkbox" '+ischecked+' onchange="checkb(3,this.checked,'+data.accountNoList[i].accountNo+','+data.accountNoList[i].id+')" />'+data.accountNoList[i].accountNo+'</label>');
 						}
 						$("#stockCodeList").html(stockLabel);
 						$("#fundPoolCodeList").html(fundPoolLabel);
@@ -73,8 +77,45 @@
 					}
 				});
 			}
-			function checkb(checkType,value){
-				alert(value);
+			function checkb(checkType,checked,value,id){
+//				alert(checkType+','+value+","+checked+','+id);
+				var status='0';
+				if(!checked){
+					status='1';
+				}
+				$.ajax({
+					url : '/updateFocus',
+					type : "POST",
+					cache : false,
+//					dataType:'json',
+					data:{'operatorType':checkType,'content':value,'status':status,'id':id},
+//					contentType:'application/json;charset=UTF-8',
+					success : function(data) {
+						if (data.returnCode == '0000') {
+							getTab();
+						}else{
+							alert(data.returnMsg);
+						}
+					}
+				});
+				getTab();
+			}
+			function updateAllFocus(status){
+				$.ajax({
+					url : '/updateAllFocus',
+					type : "POST",
+					cache : false,
+//					dataType:'json',
+					data:{'status':status},
+//					contentType:'application/json;charset=UTF-8',
+					success : function(data) {
+						if (data.returnCode == '0000') {
+							getTab();
+						}else{
+							alert(data.returnMsg);
+						}
+					}
+				});
 			}
 			function showStockInfo(){
 				var stocknameEL=$("#content").val();
@@ -138,9 +179,11 @@
 			}
 			function selectAll(){
 				$("[type='checkbox']").prop("checked",true);
+				updateAllFocus('0');
 			}
 			function disSelectAll(){
 				$("[type='checkbox']").removeAttr("checked");
+				updateAllFocus('1');
 			}
 			$(function(){
 				initCondition();
@@ -193,6 +236,7 @@
 		<div title="券商历史持仓及交易量查询" style="background: #F0F0F0;padding:5px;width:100%;height: 100%">
 			<object type="text/x-scriptlet" data="html/historyPosition.html" width="100%" height="100%"></object>
 		</div>
+		<div title="0"></div>
 	</div>
 </body>
 </html>

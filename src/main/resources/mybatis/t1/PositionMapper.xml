@@ -16,7 +16,7 @@
         </if>
     </sql>
     <sql id="stockCodeListCondition">
-        <if test="stockCodeList!=null">
+        <if test="stockCodeList!=null and stockCodeList.size>0">
             and stock_code in (
             <foreach collection="stockCodeList" item="stock_code" separator=",">
                 #{stock_code}
@@ -25,7 +25,7 @@
         </if>
     </sql>
     <sql id="fundPoolCodeListCondition">
-        <if test="fundPoolCodeList!=null">
+        <if test="fundPoolCodeList!=null and fundPoolCodeList.size>0">
             and fund_pool_code in (
             <foreach collection="fundPoolCodeList" item="fund_pool_code" separator=",">
                 #{fund_pool_code}
@@ -34,7 +34,7 @@
         </if>
     </sql>
     <sql id="accountNoListCondition">
-        <if test="accountNoList!=null">
+        <if test="accountNoList!=null and accountNoList.size>0">
             and account_no in (
             <foreach collection="accountNoList" item="account_no" separator=",">
                 #{account_no}
@@ -43,7 +43,7 @@
         </if>
     </sql>
     <sql id="stockCodeListCondition2">
-        <if test="stockCodeList!=null">
+        <if test="stockCodeList!=null and stockCodeList.size>0">
             and tei.stock_code in (
             <foreach collection="stockCodeList" item="stock_code" separator=",">
                 #{stock_code}
@@ -52,7 +52,7 @@
         </if>
     </sql>
     <sql id="fundPoolCodeListCondition2">
-        <if test="fundPoolCodeList!=null">
+        <if test="fundPoolCodeList!=null and fundPoolCodeList.size>0">
             and acc.fund_pool_code in (
             <foreach collection="fundPoolCodeList" item="fund_pool_code" separator=",">
                 #{fund_pool_code}
@@ -61,10 +61,19 @@
         </if>
     </sql>
     <sql id="accountNoListCondition2">
-        <if test="accountNoList!=null">
+        <if test="accountNoList!=null and accountNoList.size>0">
             and acc.account_no in (
             <foreach collection="accountNoList" item="account_no" separator=",">
                 #{account_no}
+            </foreach>
+            )
+        </if>
+    </sql>
+    <sql id="stockCodeListCondition3">
+        <if test="stockCodeList!=null and stockCodeList.size>0">
+            and fcpc.stock_code in (
+            <foreach collection="stockCodeList" item="stock_code" separator=",">
+                #{stock_code}
             </foreach>
             )
         </if>
@@ -229,6 +238,7 @@
             where acc.account_status!=5
            <include refid="fundPoolCodeListCondition2"/>
            <include refid="accountNoListCondition2"/>
+           <include refid="stockCodeListCondition3"/>
         group by fcpc.account_no, acc.account_name,fcpc.stock_code
         <include refid="orderCondition"/>
         <if test="sort==null or order==null">

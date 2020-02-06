@@ -5,9 +5,11 @@ import com.none.cpzs.common.CodeConstant;
 import com.none.cpzs.common.Constants;
 import com.none.cpzs.dao1.UserInfoMapper;
 import com.none.cpzs.po.UserInfo;
+import com.none.cpzs.service.SelectConditionService;
 import com.none.cpzs.service.UmsAdminService;
 import com.none.cpzs.utils.SessionUtil;
 import com.none.cpzs.vo.LoginResponse;
+import com.none.cpzs.vo.SelectCondition;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import javax.xml.ws.Response;
 public class LoginController {
     @Autowired
     private UmsAdminService umsAdminService;
+    @Autowired
+    private SelectConditionService selectConditionService;
     @RequestMapping("doLogin")
     @ApiOperation(value="登陆")
     @ResponseBody
@@ -34,6 +38,7 @@ public class LoginController {
         LoginResponse loginResponse= umsAdminService.login(userInfo.getUserName(),userInfo.getPassword());
         if(CodeConstant.SUCCESS.equals(loginResponse.getReturnCode())){
             SessionUtil.getSession().setAttribute(Constants.SESSION_USER, loginResponse.getUserInfo());
+            selectConditionService.refreshCache();
             loginResponse.setUserInfo(null);
         }
         return loginResponse;

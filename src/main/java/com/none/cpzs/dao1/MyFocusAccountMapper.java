@@ -42,6 +42,8 @@ public interface MyFocusAccountMapper {
      */
     int updateByPrimaryKey(MyFocusAccount record);
 
+    int updateStatusByUserId(@Param("userId")Integer userId,@Param("status")String status);
+
     List<MyFocusAccount> selectByUserId(int userId);
 
     int deleteByUserIdAndAccount(@Param("userId")Integer userId,@Param("accountNo") Long accountNo);

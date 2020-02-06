@@ -98,6 +98,9 @@
       </if>
     </trim>
   </insert>
+  <update id="updateStatusByUserId" parameterType="java.util.HashMap">
+    update my_focus_stock set status=#{status} where user_id=#{userId}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.none.cpzs.po.MyFocusStock" >
     update my_focus_stock
     <set >

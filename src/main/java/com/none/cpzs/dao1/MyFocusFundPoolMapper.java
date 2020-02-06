@@ -45,4 +45,7 @@ public interface MyFocusFundPoolMapper {
     List<MyFocusFundPool> selectByUserId(int userId);
 
     int deleteByUserIdAndFundPool(@Param("userId")Integer userId, @Param("fundPoolCode")Long fundPoolCode);
+
+    int updateStatusByUserId(@Param("userId")Integer userId,@Param("status")String status);
+
 }
