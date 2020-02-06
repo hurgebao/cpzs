@@ -62,17 +62,20 @@
 				{title : '股票名称', field : 'stock_name', align: 'center'},
 				{title : '委托数量', field : 'entrust_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '委托价格', field : 'entrust_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '委托状态', field : 'entrust_status', align: 'center',formatter:formatDict('entrustStatus')},
 				{title : '成交价格', field : 'deal_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '成交数量', field : 'deal_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
+				{title : '成交金额', field : 'deal_amt', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true,order:'desc'},
 				{title : '委托编号', field : 'securities_trader_entrust_no', align: 'center'},
 				{title : '源系统代码', field : 'source_sys_code', align: 'center'},
 			]],

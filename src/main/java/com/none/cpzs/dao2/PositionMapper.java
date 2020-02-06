@@ -8,7 +8,6 @@ import java.util.Map;
 public interface PositionMapper {
     List<Map<String,Object>> selectTodayEntrust(PageRequest request);
     List<Map<String,Object>> selectTodayEntrustT1(PageRequest request);
-    List<Map<String,Object>> selectPositionRange(PageRequest request);
     List<Map<String,Object>> selectPositionRangeByFundPool(PageRequest request);
     List<Map<String,Object>> selectTradeHistory(PageRequest request);
     List<Map<String,Object>> selectSecAccountTradeRange(PageRequest request);

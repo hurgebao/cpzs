@@ -42,6 +42,7 @@
 	        pageSize : 50,
 			pageList:[50,100,150,200,300],
 	        pagePosition : 'bottom',
+			sortOrder:'desc',
 	        rowStyler:function(index,row){  //没有对账的   设置字体颜色
 	    		if (row.test_status != 0){
 	    			return 'color:#FF0000;';
@@ -56,40 +57,40 @@
 	        	{title : '股票名称', field : 'stock_name', align: 'center'},
 	        	{title : '昨日持仓', field : 'last_remain_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 	        	{title : '当日持仓', field : 'current_remain_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 	            {title : '当日可卖', field : 'current_enable_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 	            {title : '当日买入', field : 'current_in_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 	            {title : '当日卖出冻结', field : 'current_out_freeze_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 	            {title : '当日卖出', field : 'current_out_complete_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '当前价', field : 'current_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '累计投入', field : 'total_buy_amt', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '持仓市值', field : 'recent_market_value', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '盈亏金额', field : 'profit_loss_value', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '盈亏比例(%)', field : 'profit_loss_radio', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true}
+				},sortable:true,order:'desc'}
 	            ]],
 			rowStyler:function(index,row){
 				return getColorBuySellFlag3(row);

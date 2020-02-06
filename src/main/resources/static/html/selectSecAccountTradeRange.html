@@ -42,6 +42,7 @@
 			pageSize : 50,
 			pageList:[50,100,150,200,300],
 			pagePosition : 'bottom',
+			sortOrder:'desc',
 			rowStyler:function(index,row){  //没有对账的   设置字体颜色
 				if (row.test_status != 0){
 					return 'color:#FF0000;';
@@ -56,13 +57,13 @@
 				{title : '资金池', field : 'fund_pool_code', align: 'center'},
 				{title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '当日买入数量', field : 'buy_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '当日卖出数量', field : 'sell_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true}
+				},sortable:true,order:'desc'}
 			]]
 		});
 	}

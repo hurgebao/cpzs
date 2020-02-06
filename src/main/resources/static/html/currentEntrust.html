@@ -59,17 +59,20 @@
 				{title : '股票名称', field : 'stock_name', align: 'center'},
 				{title : '委托数量', field : 'order_volume', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '委托价格', field : 'order_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '委托状态', field : 'status_desc', align: 'center',formatter:formatDict('entrustStatus')},
 				{title : '成交价格', field : 'transaction_vloume', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
 				{title : '成交数量', field : 'transaction_price', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
-				},sortable:true},
+				},sortable:true,order:'desc'},
+				{title : '成交金额', field : 'transaction_amt', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true,order:'desc'},
 				{title : '委托编号', field : 'order_no', align: 'center'},
 			]],
 			rowStyler:function(index,row){

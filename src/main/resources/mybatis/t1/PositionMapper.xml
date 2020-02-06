@@ -170,7 +170,7 @@
     </select>
     <!---券商 查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
-          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price
+          select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price,transaction_vloume*transaction_price as transaction_amt
           from tcdb.t_securities_trader_entrust
           where bs_flag in ('0','1')
             <include refid="stockCodeListCondition"/>
@@ -183,7 +183,7 @@
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
-        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,tei.entrust_type,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code
+        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,tei.entrust_type,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,deal_amt,source_sys_code
         from tcdb.t_trade_entrust_info tei
         inner join tcdb.t_account acc on tei.account_no=acc.account_no
         where 1=1
