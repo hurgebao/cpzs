@@ -50,7 +50,14 @@
 			},
 			//自适应列
 			columns : [ [
-				{title : '交易日期', field : 'data_date', align: 'center'},
+				{title : '交易日期', field : 'data_date', align: 'center',
+					formatter : function(value,row,index){
+						if(value==null){
+							return "合计";
+						}else{
+							return value;
+						}
+					},sortable:true},
 				{title : '股票代码', field : 'stock_code', align: 'center'},
 				{title : '股票名称', field : 'stock_name', align: 'center'},
 				{title : '证券账户编号', field : 'securities_account_no', align: 'center'},

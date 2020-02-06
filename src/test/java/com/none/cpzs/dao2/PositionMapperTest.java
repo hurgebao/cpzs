@@ -66,28 +66,6 @@ public class PositionMapperTest {
     }
 
     @org.junit.Test
-    public void testSelectPositionRange() throws Exception {
-        PageRequest request=new PageRequest();
-        request.setPage(1);
-        request.setRows(10);
-        request.setOrder("recent_market_value");
-        request.setSort("asc");
-        List<String> stockCodeList=new ArrayList<>();
-        stockCodeList.add("601288");
-        stockCodeList.add("002822");
-        stockCodeList.add("000001");
-        List<Long> fundPoolCodeList=new ArrayList<Long>();
-        fundPoolCodeList.add(1621L);
-        List<Long> accountNoList=new ArrayList<Long>();
-        accountNoList.add(600001L);
-        request.setAccountNoList(accountNoList);
-        request.setStockCodeList(stockCodeList);
-        request.setFundPoolCodeList(fundPoolCodeList);
-        List<Map<String,Object>> list= positionMapper.selectPositionRange(request);
-        System.out.println(JSON.toJSONString(list));
-    }
-
-    @org.junit.Test
     public void testSelectPositionRangeByFundPool() throws Exception {
         PageRequest request=new PageRequest();
         request.setPage(1);

@@ -32,6 +32,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectTodayEntrust(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectTodayEntrustSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }
@@ -69,6 +77,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectPositionRangeByFundPool(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectPositionRangeByFundPoolSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }
@@ -79,6 +95,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectTodayEntrustT1(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectTodayEntrustT1Sum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }
@@ -88,6 +112,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectTradeHistory(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectTradeHistorySum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }
@@ -98,6 +130,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectSecAccountTradeRange(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectSecAccountTradeRangeSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }
@@ -109,6 +149,14 @@ public class PositionController {
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
         List<Map<String,Object>> list= positionMapper.selectCurrentPositionT1(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectCurrentPositionT1Sum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
         response.setRows(list);
         return response;
     }

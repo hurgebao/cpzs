@@ -160,7 +160,7 @@ function getColorBuySellFlag(row){
 		}else if("1".indexOf(row.bs_flag)>-1){
 			return 'color:blue;';
 		}else{
-			return 'color:gray;';
+			return 'color:black;';
 		}
 }
 

@@ -49,7 +49,14 @@
 	    	},
 	    	//自适应列
 	        columns : [ [
-				{title : '资金池', field : 'fund_pool_code', align: 'center'},
+				{title : '资金池', field : 'fund_pool_code', align: 'center',
+					formatter : function(value,row,index){
+						if(value==null){
+							return "合计";
+						}else{
+							return value;
+						}
+					},sortable:true},
 	        	{title : '股票代码', field : 'stock_code', align: 'center'},
 	        	{title : '股票名称', field : 'stock_name', align: 'center'},
 	        	{title : '总持仓', field : 'total_volume', align: 'right',formatter:function(value,row,index){

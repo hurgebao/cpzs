@@ -120,6 +120,57 @@
         <include refid="orderCondition"/>
         <include refid="limitCondition"/>
     </select>
+
+    <!--查询当日某机构持仓市值排名及买卖成交量(筛选操盘股票)-->
+    <select id="selectPositionRangeByFundPoolSum"  resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+            sum(a.recent_market_value ) as recent_market_value,
+            sum(a.profit_loss_value ) as profit_loss_value,
+            sum(a.total_volume) as total_volume,
+            sum(a.available_sell_volume ) as available_sell_volume,
+            sum(b.total_trade_num ) as total_trade_num,
+            sum(b.buy_num ) as buy_num,
+            sum(b.sell_num) as sell_num ,
+            count(*) as total_num
+        from
+        (
+        select
+        stock_code,
+        fund_pool_code,
+        max(stock_name) as stock_name,
+        sum(ifnull(recent_market_value,0)) as recent_market_value,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
+        sum(ifnull(total_volume,0)) as total_volume,
+        sum(ifnull(available_sell_volume,0)) as available_sell_volume,
+        sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
+        max(current_price) as current_price
+        from tcdb.t_securities_trader_hold
+        where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        group by stock_code,fund_pool_code
+        ) a
+        left join
+        (
+        select
+        tmp.stock_code,
+        tmp.fund_pool_code,
+        max(tmp.stock_name) as stock_name,
+        sum(ifnull(tmp.buy_num,0)) as buy_num,
+        sum(ifnull(tmp.sell_num,0)) as sell_num,
+        sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num
+        from
+        (
+        select fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+        from tcdb.t_securities_trader_entrust where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        )tmp
+        group by tmp.stock_code,tmp.fund_pool_code
+        ) b
+        on a.stock_code=b.stock_code and a.fund_pool_code=b.fund_pool_code
+    </select>
+
     <!--查询某只股票历史操作记录(查看操盘股票活跃交易日)-->
     <select id="selectTradeHistory" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
     select a.*,b.total_trade_num,b.buy_num,b.sell_num,b.jmr_num,b.jmr_num/a.total_volume*100 from
@@ -168,6 +219,60 @@
     </if>
     <include refid="limitCondition"/>
     </select>
+    <!--查询某只股票历史操作记录(查看操盘股票活跃交易日)-->
+    <select id="selectTradeHistorySum" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+        sum(a.market_value) as market_value,
+        sum(a.profit_loss_value ) as profit_loss_value,
+        sum(a.total_volume) as total_volume,
+        sum(a.available_sell_volume ) as available_sell_volume,
+        sum(b.total_trade_num ) as total_trade_num,
+        sum(b.buy_num ) as buy_num,
+        sum(b.sell_num ) as sell_num,
+        sum(b.jmr_num ) as jmr_num,
+        count(*) as total_num
+         from
+        (
+        select
+        data_date,
+        fund_pool_code,
+        stock_code,
+        max(stock_name) as stock_name,
+        max(current_price) as current_price,
+        sum(ifnull(recent_market_value,0)) as market_value  ,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
+        sum(ifnull(total_volume,0)) as total_volume,
+        sum(ifnull(available_sell_volume,0)) as available_sell_volume,
+        sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price
+        from tcdb.t_securities_trader_hold
+        where
+        1=1
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        group by data_date,fund_pool_code,stock_code
+        ) a
+        left join
+        (
+        select
+        tmp.data_date,
+        tmp.fund_pool_code,
+        tmp.stock_code,
+        sum(ifnull(tmp.buy_num,0)) as buy_num,
+        sum(ifnull(tmp.sell_num,0)) as sell_num,
+        sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num,
+        sum(ifnull(tmp.buy_num,0)-ifnull(tmp.sell_num,0)) as jmr_num
+        from
+        (
+        select data_date,fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num from tcdb.t_securities_trader_entrust
+        where 1=1
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        )tmp
+        group by tmp.data_date,tmp.fund_pool_code,tmp.stock_code
+        ) b
+        on a.data_date=b.data_date and a.fund_pool_code=b.fund_pool_code and a.stock_code=b.stock_code
+    </select>
+
     <!---券商 查看某天股票走势与买卖热力图 券商-->
     <select id="selectTodayEntrust" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
           select data_date,fund_pool_code,action_time,bs_flag,bs_flag_desc,stock_code,stock_name,status_desc,order_no,order_price,order_volume,transaction_vloume,transaction_price,transaction_vloume*transaction_price as transaction_amt
@@ -180,6 +285,17 @@
                 order by data_date desc,action_time desc
             </if>
            <include refid="limitCondition"/>
+    </select>
+    <select id="selectTodayEntrustSum" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+          sum(order_volume ) as order_volume,
+          sum(transaction_vloume ) as transaction_vloume,
+          sum(transaction_vloume*transaction_price) as transaction_amt,
+          count(*) as total_num
+        from tcdb.t_securities_trader_entrust
+        where bs_flag in ('0','1')
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
@@ -196,7 +312,19 @@
         </if>
         <include refid="limitCondition"/>
     </select>
-
+    <select id="selectTodayEntrustT1Sum" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+          sum(entrust_num) as entrust_num,
+          sum(deal_num) as deal_num,
+          sum(deal_amt) as deal_amt,
+          count(*) as total_num
+        from tcdb.t_trade_entrust_info tei
+        inner join tcdb.t_account acc on tei.account_no=acc.account_no
+        where 1=1
+        <include refid="stockCodeListCondition2"/>
+        <include refid="fundPoolCodeListCondition2"/>
+        <include refid="accountNoListCondition2"/>
+    </select>
     <select id="selectSecAccountTradeRange"  resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
        select
             tmp.securities_account_no,
@@ -224,6 +352,41 @@
         ) tmp
         group by tmp.securities_account_no,tmp.stock_code,tmp.data_date,tmp.fund_pool_code
         order by tmp.data_date desc,tmp.stock_code,tmp.securities_account_no desc limit 50;
+    </select>
+    <select id="selectSecAccountTradeRangeSum"  resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+            sum(sss.total_trade_num) as total_trade_num,
+            sum(sss.buy_num) as buy_num ,
+            sum(sss.sell_num) as sell_num,
+            count(*) as total_num
+        FROM
+        (
+            select
+                tmp.securities_account_no,
+                tmp.data_date,
+                tmp.stock_code,
+                tmp.fund_pool_code,
+                max(stock_name) as stock_name,
+                sum(tmp.buy_num+tmp.sell_num) as total_trade_num,
+                sum(tmp.buy_num) as buy_num ,
+                sum(tmp.sell_num) as sell_num
+            from
+            (
+            select
+            data_date,
+            fund_pool_code,
+            securities_account_no,
+            stock_code,
+            stock_name,
+            case when bs_flag='0' then transaction_vloume else 0 end as buy_num,
+            case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+            from
+            tcdb.t_securities_trader_entrust
+            where 1=1
+            <include refid="stockCodeListCondition"/>
+            ) tmp
+            group by tmp.securities_account_no,tmp.stock_code,tmp.data_date,tmp.fund_pool_code
+        ) sss
     </select>
     <select id="selectCurrentPositionT1"   resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
        select
@@ -257,4 +420,41 @@
         </if>
         <include refid="limitCondition"/>
     </select>
+    <select id="selectCurrentPositionT1Sum"   resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+            sum(tmp.last_remain_num) as last_remain_num,
+            sum(tmp.current_enable_num) as current_enable_num,
+            sum(tmp.current_remain_num) as current_remain_num,
+            sum(tmp.recent_market_value) as recent_market_value,
+            sum(tmp.profit_loss_value ) as profit_loss_value,
+            sum(tmp.current_in_num)           as   current_in_num,
+            sum(tmp.current_out_freeze_num)   as   current_out_freeze_num,
+            sum(tmp.current_out_complete_num) as   current_out_complete_num  ,
+            sum(tmp.total_buy_amt)            as   total_buy_amt,
+            count(*) as total_num
+        from
+        (
+            select
+            fcpc.account_no,fcpc.stock_code,
+            sum(fcpc.last_remain_num) as last_remain_num,
+            sum(fcpc.current_enable_num) as current_enable_num,
+            sum(fcpc.current_remain_num) as current_remain_num,
+            sum(fcpc.current_remain_num*c.current_price) as recent_market_value,
+            sum(fcpc.current_remain_num*c.current_price-fcpc.total_buy_amt ) as profit_loss_value,
+            sum(fcpc.current_in_num)           as   current_in_num,
+            sum(fcpc.current_out_freeze_num)   as   current_out_freeze_num,
+            sum(fcpc.current_out_complete_num) as   current_out_complete_num  ,
+            sum(fcpc.total_buy_amt)            as   total_buy_amt
+            from t_fund_chnl_position_current fcpc
+            inner join t_account acc on fcpc.account_no=acc.account_no
+            inner join
+            (select stock_code,current_price from riskdb.r_stock_value_info where data_dt=(select max(data_dt) from riskdb.r_stock_value_info)) c
+            on fcpc.stock_code=c.stock_code
+            where acc.account_status!=5
+            <include refid="fundPoolCodeListCondition2"/>
+            <include refid="accountNoListCondition2"/>
+            <include refid="stockCodeListCondition3"/>
+            group by fcpc.account_no,fcpc.stock_code
+        ) tmp
+      </select>
 </mapper>

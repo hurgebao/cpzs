@@ -50,7 +50,14 @@
 	    	},
 	    	//自适应列
 	        columns : [ [
-				{title : '交易账户编号', field : 'account_no', align: 'center'},
+				{title : '交易账户编号', field : 'account_no', align: 'center',
+					formatter : function(value,row,index){
+						if(value==null){
+							return "合计";
+						}else{
+							return value;
+						}
+					},sortable:true},
 				{title : '交易账户名称', field : 'account_name', align: 'center'},
 
 				{title : '股票代码', field : 'stock_code', align: 'center'},
