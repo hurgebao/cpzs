@@ -63,7 +63,7 @@
 				{title : '委托价格', field : 'order_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},
-				{title : '委托状态', field : 'status_desc', align: 'center'},
+				{title : '委托状态', field : 'status_desc', align: 'center',formatter:formatDict('entrustStatus')},
 				{title : '成交价格', field : 'transaction_vloume', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},

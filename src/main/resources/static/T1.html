@@ -40,7 +40,7 @@
 			}
 		</style>
 		<script type="application/javascript">
-			function getTab(){
+			function refreshTab(){
 				var tab = $('#viewTab').tabs('getSelected');
 				var index = $('#viewTab').tabs('getTabIndex',tab);
 				$('#viewTab').tabs('select',5);
@@ -92,13 +92,13 @@
 //					contentType:'application/json;charset=UTF-8',
 					success : function(data) {
 						if (data.returnCode == '0000') {
-							getTab();
+							refreshTab();
 						}else{
 							alert(data.returnMsg);
 						}
 					}
 				});
-				getTab();
+				refreshTab();
 			}
 			function updateAllFocus(status){
 				$.ajax({
@@ -110,7 +110,7 @@
 //					contentType:'application/json;charset=UTF-8',
 					success : function(data) {
 						if (data.returnCode == '0000') {
-							getTab();
+							refreshTab();
 						}else{
 							alert(data.returnMsg);
 						}
@@ -152,6 +152,7 @@
 					success : function(data) {
 						if (data.returnCode == '0000') {
 							initCondition();
+							refreshTab();
 						}else{
 							alert(data.returnMsg);
 						}
@@ -171,6 +172,7 @@
 					success : function(data) {
 						if (data.returnCode == '0000') {
 							initCondition();
+							refreshTab();
 						}else{
 							alert(data.returnMsg);
 						}

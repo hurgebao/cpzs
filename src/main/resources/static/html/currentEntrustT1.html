@@ -56,7 +56,8 @@
 				{title : '交易账户编号', field : 'account_no', align: 'center'},
 				{title : '交易账户名称', field : 'account_name', align: 'center'},
 				{title : '资金池', field : 'fund_pool_code', align: 'center'},
-				{title : '买卖标志', field : 'buy_sell_flag', align: 'center'},
+				{title : '委托类别', field : 'entrust_type', align: 'center',formatter:formatDict('entrustType')},
+				{title : '买卖标志', field : 'buy_sell_flag', align: 'center',formatter:formatDict('buySellFlag')},
 				{title : '股票代码', field : 'stock_code', align: 'center'},
 				{title : '股票名称', field : 'stock_name', align: 'center'},
 				{title : '委托数量', field : 'entrust_num', align: 'right',formatter:function(value,row,index){
@@ -65,7 +66,7 @@
 				{title : '委托价格', field : 'entrust_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},
-				{title : '委托状态', field : 'entrust_status', align: 'center'},
+				{title : '委托状态', field : 'entrust_status', align: 'center',formatter:formatDict('entrustStatus')},
 				{title : '成交价格', field : 'deal_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},

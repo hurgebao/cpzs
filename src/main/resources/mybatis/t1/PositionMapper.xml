@@ -87,12 +87,14 @@
         fund_pool_code,
         max(stock_name) as stock_name,
         sum(ifnull(recent_market_value,0)) as recent_market_value,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
         sum(ifnull(total_volume,0)) as total_volume,
         sum(ifnull(available_sell_volume,0)) as available_sell_volume,
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
         max(current_price) as current_price
         from tcdb.t_securities_trader_hold
         where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
         <include refid="fundPoolCodeListCondition"/>
         group by stock_code,fund_pool_code
     ) a
@@ -109,6 +111,7 @@
         (
             select fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
             from tcdb.t_securities_trader_entrust where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
         <include refid="fundPoolCodeListCondition"/>
         )tmp
         group by tmp.stock_code,tmp.fund_pool_code
@@ -128,6 +131,7 @@
         max(stock_name) as stock_name,
         max(current_price) as current_price,
         sum(ifnull(recent_market_value,0)) as market_value  ,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
         sum(ifnull(total_volume,0)) as total_volume,
         sum(ifnull(available_sell_volume,0)) as available_sell_volume,
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price
@@ -179,7 +183,7 @@
     </select>
     <!---查看某天股票走势与买卖热力图 T1-->
     <select id="selectTodayEntrustT1" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
-        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code
+        select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,tei.entrust_type,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,source_sys_code
         from tcdb.t_trade_entrust_info tei
         inner join tcdb.t_account acc on tei.account_no=acc.account_no
         where 1=1
@@ -223,19 +227,26 @@
     </select>
     <select id="selectCurrentPositionT1"   resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
        select
-            fcpc.account_no, acc.account_name,fcpc.stock_code,
-            max(fcpc.stock_name) as stock_name,
-            sum(fcpc.last_remain_num) as last_remain_num,
-            sum(fcpc.current_enable_num) as current_enable_num,
-            sum(fcpc.current_remain_num) as current_remain_num,
-            sum(fcpc.current_in_num)           as   current_in_num,
-            sum(fcpc.current_out_freeze_num)   as   current_out_freeze_num,
-            sum(fcpc.current_out_complete_num) as   current_out_complete_num  ,
-            sum(fcpc.total_buy_amt*fcpc.position_change_ratio)            as   total_buy_amt,
-            sum(fcpc.total_buy_amt*fcpc.position_change_ratio)/sum(current_remain_num)   as   cost_price
-            from t_fund_chnl_position_current fcpc
-            inner join t_account acc on fcpc.account_no=acc.account_no
-            where acc.account_status!=5
+        fcpc.account_no, acc.account_name,fcpc.stock_code,
+        max(c.current_price) as current_price,
+        max(fcpc.stock_name) as stock_name,
+        sum(fcpc.last_remain_num) as last_remain_num,
+        sum(fcpc.current_enable_num) as current_enable_num,
+        sum(fcpc.current_remain_num) as current_remain_num,
+        sum(fcpc.current_remain_num*c.current_price) as recent_market_value,
+        sum(fcpc.current_remain_num*c.current_price-fcpc.total_buy_amt ) as profit_loss_value,
+        sum(fcpc.current_remain_num*c.current_price-fcpc.total_buy_amt )/ sum(fcpc.total_buy_amt)*100  as profit_loss_radio,
+        sum(fcpc.current_in_num)           as   current_in_num,
+        sum(fcpc.current_out_freeze_num)   as   current_out_freeze_num,
+        sum(fcpc.current_out_complete_num) as   current_out_complete_num  ,
+        sum(fcpc.total_buy_amt)            as   total_buy_amt,
+        sum(fcpc.total_buy_amt)/sum(current_remain_num)   as   cost_price
+        from t_fund_chnl_position_current fcpc
+        inner join t_account acc on fcpc.account_no=acc.account_no
+        inner join
+        (select stock_code,current_price from riskdb.r_stock_value_info where data_dt=(select max(data_dt) from riskdb.r_stock_value_info)) c
+        on fcpc.stock_code=c.stock_code
+        where acc.account_status!=5
            <include refid="fundPoolCodeListCondition2"/>
            <include refid="accountNoListCondition2"/>
            <include refid="stockCodeListCondition3"/>

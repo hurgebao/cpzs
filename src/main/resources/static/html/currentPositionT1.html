@@ -72,13 +72,28 @@
 	            {title : '当日卖出', field : 'current_out_complete_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
-	            {title : '累计投入', field : 'total_buy_amt', align: 'right',formatter:function(value,row,index){
+				{title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},
-	            {title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
+				{title : '当前价', field : 'current_price', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '累计投入', field : 'total_buy_amt', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '持仓市值', field : 'recent_market_value', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '盈亏金额', field : 'profit_loss_value', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '盈亏比例(%)', field : 'profit_loss_radio', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true}
-	            ]]
+	            ]],
+			rowStyler:function(index,row){
+				return getColorBuySellFlag3(row);
+			}
 		});
 	}
 </script>

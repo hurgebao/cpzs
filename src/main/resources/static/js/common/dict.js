@@ -145,7 +145,15 @@ function getDictKeyValueNew(key){
 	
 	return key < 3 ? "存入" : "取出";
 }
-
+function formatDict(field) {
+	return function (value, row, index) {
+		var data = eval('_' + field.toUpperCase() + '_DICT');
+		if (value && data.data && data.data.hasOwnProperty(value)) {
+			return data.data[value];
+		}
+		return value;
+	}
+}
 function getColorBuySellFlag(row){
 		if ("0".indexOf(row.bs_flag)>-1){
 			return 'color:red;';
@@ -163,6 +171,15 @@ function getColorBuySellFlag2(row){
 	}else if ("02467BCEFKN".indexOf(row.buy_sell_flag)>-1){
 		return 'color:red;';
 	}else if("1358ADJGOP".indexOf(row.buy_sell_flag)>-1){
+		return 'color:blue;';
+	}
+}
+function getColorBuySellFlag3(row){
+	if(row.cost_price==row.current_price){
+		return 'color:black;';
+	}else if (row.cost_price>row.current_price){
+		return 'color:red;';
+	}else if(row.cost_price<row.current_price){
 		return 'color:blue;';
 	}
 }

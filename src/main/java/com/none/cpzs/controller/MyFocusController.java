@@ -1,6 +1,7 @@
 package com.none.cpzs.controller;
 
 import com.none.cpzs.annotation.FileLog;
+import com.none.cpzs.annotation.LogLevel;
 import com.none.cpzs.common.CodeConstant;
 import com.none.cpzs.dao1.MyFocusAccountMapper;
 import com.none.cpzs.dao1.MyFocusFundPoolMapper;
@@ -147,7 +148,7 @@ public class MyFocusController {
         return response;
     }
     @PostMapping("updateFocus")
-    @FileLog
+    @FileLog(level = LogLevel.DEBUG)
     public BasicResponse update(String operatorType,String content,String status,Integer id){
             BasicResponse response=new BasicResponse();
             if(StringUtils.trim(operatorType)==null || StringUtils.trim(content)==null || StringUtils.trim(status)==null){
@@ -180,7 +181,7 @@ public class MyFocusController {
             return response;
     }
     @PostMapping("updateAllFocus")
-    @FileLog
+    @FileLog(level = LogLevel.DEBUG)
     public BasicResponse updateAll(String status){
         BasicResponse response=new BasicResponse();
         if(StringUtils.trim(status)==null){

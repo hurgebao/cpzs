@@ -52,22 +52,25 @@
 				{title : '资金池', field : 'fund_pool_code', align: 'center'},
 	        	{title : '股票代码', field : 'stock_code', align: 'center'},
 	        	{title : '股票名称', field : 'stock_name', align: 'center'},
-	        	{title : '当前市值', field : 'recent_market_value', align: 'right',formatter:function(value,row,index){
-					return formatMoney2(value);
-				},sortable:true},
 	        	{title : '总持仓', field : 'total_volume', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
-	            {title : '可卖数量', field : 'available_sell_volume', align: 'right',formatter:function(value,row,index){
+				{title : '可卖数量', field : 'available_sell_volume', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
-	            {title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
+				{title : '成本价', field : 'cost_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},
-	            {title : '当前价', field : 'current_price', align: 'right',formatter:function(value,row,index){
+				{title : '当前价', field : 'current_price', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true},
-	            {title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
+				{title : '当前市值', field : 'recent_market_value', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '盈亏金额', field : 'profit_loss_value', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true},
+				{title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true},
 	            {title : '当日买入数量', field : 'buy_num', align: 'right',formatter:function(value,row,index){
@@ -76,7 +79,10 @@
 	            {title : '当日卖出数量', field : 'sell_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true}
-	            ]]
+	            ]],
+			rowStyler:function(index,row){
+				return getColorBuySellFlag3(row);
+			}
 		});
 	}
 </script>
