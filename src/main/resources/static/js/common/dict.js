@@ -178,8 +178,8 @@ function getColorBuySellFlag3(row){
 	if(row.cost_price==row.current_price){
 		return 'color:black;';
 	}else if (row.cost_price>row.current_price){
-		return 'color:red;';
-	}else if(row.cost_price<row.current_price){
 		return 'color:blue;';
+	}else if(row.cost_price<row.current_price){
+		return 'color:red;';
 	}
 }
