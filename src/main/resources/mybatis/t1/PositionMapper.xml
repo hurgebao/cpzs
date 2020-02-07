@@ -457,4 +457,60 @@
             group by fcpc.account_no,fcpc.stock_code
         ) tmp
       </select>
+      <select id="selectTradeRange"   resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+          select
+                stock_code,
+                max(stock_name) as stock_name,
+                sum(entrust_num*entrust_price) as entrust_amt,
+                sum(deal_amt) as deal_amt,
+                sum(case when buy_sell_flag='0' then deal_amt else 0 end ) as buy_amt,
+                sum(case when buy_sell_flag='1' then deal_amt else 0 end ) as sell_amt,
+                sum(case when buy_sell_flag='0' then deal_amt else 0 end )- sum(case when buy_sell_flag='1' then deal_amt else 0 end ) as jmr_amt,
+                sum(case when buy_sell_flag='0' then 1 else 0 end ) as buy_count,
+                sum(case when buy_sell_flag='1' then 1 else 0 end ) as sell_count,
+                count(*) as total_count
+            from tcdb.t_trade_entrust_info
+          where 1=1
+              <include refid="fundPoolCodeListCondition"/>
+              <include refid="accountNoListCondition"/>
+              <include refid="stockCodeListCondition"/>
+            group by stock_code
+          <include refid="orderCondition"/>
+          <if test="sort==null or order==null">
+              order by deal_amt desc
+          </if>
+          <include refid="limitCondition"/>
+      </select>
+    <select id="selectTradeRangeSum"   resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        SELECT
+            sum(tmp.entrust_amt) as entrust_amt,
+            sum(tmp.deal_amt) as deal_amt,
+            sum(tmp.buy_amt) as buy_amt,
+            sum(tmp.sell_amt) as sell_amt,
+            sum(tmp.jmr_amt) as jmr_amt,
+            sum(tmp.buy_count) as buy_count,
+            sum(tmp.sell_count) as sell_count,
+            sum(tmp.total_count) as total_count,
+            count(*) as total_num
+        FROM
+        (
+            select
+            stock_code,
+            max(stock_name) as stock_name,
+            sum(entrust_num*entrust_price) as entrust_amt,
+            sum(deal_amt) as deal_amt,
+            sum(case when buy_sell_flag='0' then deal_amt else 0 end ) as buy_amt,
+            sum(case when buy_sell_flag='1' then deal_amt else 0 end ) as sell_amt,
+            sum(case when buy_sell_flag='0' then deal_amt else 0 end )- sum(case when buy_sell_flag='1' then deal_amt else 0 end ) as jmr_amt,
+            sum(case when buy_sell_flag='0' then 1 else 0 end ) as buy_count,
+            sum(case when buy_sell_flag='1' then 1 else 0 end ) as sell_count,
+            count(*) as total_count
+            from tcdb.t_trade_entrust_info
+            where 1=1
+            <include refid="fundPoolCodeListCondition"/>
+            <include refid="accountNoListCondition"/>
+            <include refid="stockCodeListCondition"/>
+            group by stock_code
+        ) tmp
+    </select>
 </mapper>

@@ -161,4 +161,22 @@ public class PositionController {
         return response;
     }
 
+    @PostMapping("selectTradeRange")
+    @ApiOperation(value="查询当日交易排名")
+    public Object selectTradeRange(PageRequest request){
+        initSelectCondition(request);
+        PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
+        List<Map<String,Object>> list= positionMapper.selectTradeRange(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectTradeRangeSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
+        response.setRows(list);
+        return response;
+    }
+
 }
