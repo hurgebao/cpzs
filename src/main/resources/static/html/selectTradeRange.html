@@ -54,29 +54,48 @@
 					}
 				},sortable:true},
 			{title : '股票名称', field : 'stock_name', align: 'center'},
-			{title : '买入数量', field : 'buy_count', align: 'right',formatter:function(value,row,index){
+			{title : '买入委托数量', field : 'buy_entrust_num', align: 'right',formatter:function(value,row,index){
+				return formatNumber(value);
+			},sortable:true,order:'desc'},
+			{title : '卖出委托数量', field : 'sell_entrust_num', align: 'right',formatter:function(value,row,index){
+				return formatNumber(value);
+			},sortable:true,order:'desc'},
+			{title : '买入成交数量', field : 'buy_deal_num', align: 'right',formatter:function(value,row,index){
+				return formatNumber(value);
+			},sortable:true,order:'desc'},
+			{title : '卖出成交数量', field : 'sell_deal_num', align: 'right',formatter:function(value,row,index){
+				return formatNumber(value);
+			},sortable:true,order:'desc'},
+			{title : '买入委托笔数', field : 'buy_count', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true,order:'desc'},
-			{title : '买入金额', field : 'buy_amt', align: 'right',formatter:function(value,row,index){
-					return formatNumber(value);
-				},sortable:true,order:'desc'},
-			{title : '卖出数量', field : 'sell_count', align: 'right',formatter:function(value,row,index){
+			{title : '卖出委托笔数', field : 'sell_count', align: 'right',formatter:function(value,row,index){
+				return formatNumber(value);
+			},sortable:true,order:'desc'},
+			{title : '买入成交金额', field : 'buy_amt', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true,order:'desc'},
-			{title : '卖出金额', field : 'sell_amt', align: 'right',formatter:function(value,row,index){
-					return formatNumber(value);
+			{title : '卖出成交金额', field : 'sell_amt', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
 				},sortable:true,order:'desc'},
 			{title : '净买入金额', field : 'jmr_amt', align: 'right',formatter:function(value,row,index){
-					return formatNumber(value);
-				},sortable:true,order:'desc'},
-			{title : '委托金额', field : 'entrust_amt', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
 			},sortable:true,order:'desc'},
-			{title : '成交金额', field : 'deal_amt', align: 'right',formatter:function(value,row,index){
-				return formatNumber(value);
+			{title : '总委托金额', field : 'entrust_amt', align: 'right',formatter:function(value,row,index){
+				return formatMoney2(value);
+			},sortable:true,order:'desc'},
+			{title : '总成交金额', field : 'deal_amt', align: 'right',formatter:function(value,row,index){
+				return formatMoney2(value);
 			},sortable:true,order:'desc'}
 		 ]],
 			rowStyler:function(index,row){
-				return getColorBuySellFlag3(row);
+				if(row.jmr_amt==0){
+					return 'color:black;';
+				}else if (row.jmr_amt>0){
+					return 'color:red;';
+				}else if(row.jmr_amt<0){
+					return 'color:blue;';
+				}
 			}
 		});
 	}
