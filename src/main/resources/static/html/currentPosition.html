@@ -75,6 +75,9 @@
 				{title : '盈亏金额', field : 'profit_loss_value', align: 'right',formatter:function(value,row,index){
 					return formatMoney2(value);
 				},sortable:true,order:'desc'},
+				{title : '盈亏比例(%)', field : 'profit_loss_radio', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true,order:'desc'},
 				{title : '总交易数量', field : 'total_trade_num', align: 'right',formatter:function(value,row,index){
 					return formatNumber(value);
 				},sortable:true,order:'desc'},

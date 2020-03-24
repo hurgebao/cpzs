@@ -182,6 +182,7 @@
         sum(ifnull(total_volume,0)) as total_volume,
         sum(ifnull(available_sell_volume,0)) as available_sell_volume,
         sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
+        sum(ifnull(profit_loss_value,0))/sum(ifnull(total_volume,0)*cost_price)*100 as profit_loss_radio,
         max(current_price) as current_price
         from tcdb.t_securities_trader_hold
         where data_date=current_date()
