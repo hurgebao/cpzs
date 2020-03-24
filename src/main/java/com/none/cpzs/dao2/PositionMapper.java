@@ -28,4 +28,6 @@ public interface PositionMapper {
     Map<String,Object> selectCurrentPositionT1Sum(PageRequest request);
     Map<String,Object> selectTradeRangeSum(PageRequest request);
 
+    List<Map<String,Object>> selectPositionRange(PageRequest request);
+    Map<String,Object> selectPositionRangeSum(PageRequest request);
 }

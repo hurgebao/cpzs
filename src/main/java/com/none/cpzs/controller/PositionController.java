@@ -88,6 +88,24 @@ public class PositionController {
         response.setRows(list);
         return response;
     }
+    @PostMapping("selectPositionRange")
+    @ApiOperation(value="查询持仓排名")
+    public Object selectPositionRange(PageRequest request){
+        initSelectCondition(request);
+        PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
+        List<Map<String,Object>> list= positionMapper.selectPositionRange(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectPositionRangeSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
+        response.setRows(list);
+        return response;
+    }
+
     @FileLog(level = LogLevel.DEBUG)
     @PostMapping("selectTodayEntrustT1")
     @ApiOperation(value="查询当日委托")
@@ -178,5 +196,7 @@ public class PositionController {
         response.setRows(list);
         return response;
     }
-
+    public static  void main(String[] args){
+        System.out.println(Long.MAX_VALUE);
+    }
 }

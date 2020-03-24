@@ -170,7 +170,94 @@
         ) b
         on a.stock_code=b.stock_code and a.fund_pool_code=b.fund_pool_code
     </select>
+    <!--查询当日某机构持仓市值排名及买卖成交量(筛选操盘股票)-->
+    <select id="selectPositionRange"  resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select a.*,b.total_trade_num,b.buy_num,b.sell_num from
+        (
+        select
+        stock_code,
+        max(stock_name) as stock_name,
+        sum(ifnull(recent_market_value,0)) as recent_market_value,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
+        sum(ifnull(total_volume,0)) as total_volume,
+        sum(ifnull(available_sell_volume,0)) as available_sell_volume,
+        sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
+        max(current_price) as current_price
+        from tcdb.t_securities_trader_hold
+        where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        group by stock_code
+        ) a
+        left join
+        (
+        select
+        tmp.stock_code,
+        max(tmp.stock_name) as stock_name,
+        sum(ifnull(tmp.buy_num,0)) as buy_num,
+        sum(ifnull(tmp.sell_num,0)) as sell_num,
+        sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num
+        from
+        (
+        select fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+        from tcdb.t_securities_trader_entrust where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        )tmp
+        group by tmp.stock_code
+        ) b
+        on a.stock_code=b.stock_code
+        <include refid="orderCondition"/>
+        <include refid="limitCondition"/>
+    </select>
 
+    <!--查询当日某机构持仓市值排名及买卖成交量(筛选操盘股票)-->
+    <select id="selectPositionRangeSum"  resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
+        select
+        sum(a.recent_market_value ) as recent_market_value,
+        sum(a.profit_loss_value ) as profit_loss_value,
+        sum(a.total_volume) as total_volume,
+        sum(a.available_sell_volume ) as available_sell_volume,
+        sum(b.total_trade_num ) as total_trade_num,
+        sum(b.buy_num ) as buy_num,
+        sum(b.sell_num) as sell_num ,
+        count(*) as total_num
+        from
+        (
+        select
+        stock_code,
+        max(stock_name) as stock_name,
+        sum(ifnull(recent_market_value,0)) as recent_market_value,
+        sum(ifnull(profit_loss_value,0)) as profit_loss_value,
+        sum(ifnull(total_volume,0)) as total_volume,
+        sum(ifnull(available_sell_volume,0)) as available_sell_volume,
+        sum(ifnull(total_volume,0)*cost_price)/sum(ifnull(total_volume,0)) as cost_price,
+        max(current_price) as current_price
+        from tcdb.t_securities_trader_hold
+        where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        group by stock_code
+        ) a
+        left join
+        (
+        select
+        tmp.stock_code,
+        max(tmp.stock_name) as stock_name,
+        sum(ifnull(tmp.buy_num,0)) as buy_num,
+        sum(ifnull(tmp.sell_num,0)) as sell_num,
+        sum(ifnull(tmp.buy_num,0)+ifnull(tmp.sell_num,0)) as total_trade_num
+        from
+        (
+        select fund_pool_code,stock_code,stock_name,case when bs_flag='0' then transaction_vloume else 0 end as buy_num,case when bs_flag='1' then transaction_vloume else 0 end as sell_num
+        from tcdb.t_securities_trader_entrust where data_date=current_date()
+        <include refid="stockCodeListCondition"/>
+        <include refid="fundPoolCodeListCondition"/>
+        )tmp
+        group by tmp.stock_code
+        ) b
+        on a.stock_code=b.stock_code
+    </select>
     <!--查询某只股票历史操作记录(查看操盘股票活跃交易日)-->
     <select id="selectTradeHistory" resultType="java.util.HashMap"  parameterType="com.none.cpzs.vo.PageRequest">
     select a.*,b.total_trade_num,b.buy_num,b.sell_num,b.jmr_num,b.jmr_num/a.total_volume*100 from
