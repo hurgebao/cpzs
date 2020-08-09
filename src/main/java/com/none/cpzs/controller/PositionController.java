@@ -43,7 +43,24 @@ public class PositionController {
         response.setRows(list);
         return response;
     }
-
+    @FileLog(level = LogLevel.DEBUG)
+    @PostMapping("selectFailEntrust")
+    @ApiOperation(value="查询废单")
+    public PageResponse<Map<String,Object>> selectFailEntrust(PageRequest request){
+        initSelectCondition(request);
+        PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
+        List<Map<String,Object>> list= positionMapper.selectFailEntrust(request);
+        if(list!=null && list.size()>0){
+            Map<String,Object> sumRecord= positionMapper.selectFailEntrustSum(request);
+            list.add(sumRecord);
+            int totalNum=Integer.valueOf(sumRecord.get("total_num").toString());
+            response.setTotal(totalNum);
+        }else{
+            response.setTotal(0);
+        }
+        response.setRows(list);
+        return response;
+    }
     private void initSelectCondition(PageRequest request) {
         List<MyFocusAccount> accList=SessionUtil.getSelect().getAccountNoList();
         List<MyFocusFundPool> fundPoolList=SessionUtil.getSelect().getFundPoolCodeList();

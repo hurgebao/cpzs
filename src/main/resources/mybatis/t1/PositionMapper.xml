@@ -390,7 +390,7 @@
         select date_format(entrust_time,'%Y-%m-%d %H:%i:%s') as entrust_time,tei.entrust_type,acc.account_no,account_name,tei.fund_pool_code,buy_sell_flag,stock_code,stock_name,entrust_status,securities_trader_entrust_no,entrust_price,entrust_num,deal_num,deal_price,deal_amt,source_sys_code
         from tcdb.t_trade_entrust_info tei
         inner join tcdb.t_account acc on tei.account_no=acc.account_no
-        where 1=1
+        where tei.securities_account_no is not null and tei.show_flag='0' and tei.entrust_type='0'
         <include refid="stockCodeListCondition2"/>
         <include refid="fundPoolCodeListCondition2"/>
         <include refid="accountNoListCondition2"/>
@@ -408,7 +408,7 @@
           count(*) as total_num
         from tcdb.t_trade_entrust_info tei
         inner join tcdb.t_account acc on tei.account_no=acc.account_no
-        where 1=1
+        where tei.securities_account_no is not null and tei.show_flag='0'  and tei.entrust_type='0'
         <include refid="stockCodeListCondition2"/>
         <include refid="fundPoolCodeListCondition2"/>
         <include refid="accountNoListCondition2"/>

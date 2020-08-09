@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- 加载easyUI中的js和css -->
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../js/jquery-easyui-1.5.2/demo/demo.css">
+<link rel="stylesheet" type="text/css" href="../css/common.css">
+
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js"></script>
+
+<!-- 扩展验证 -->
+<script type="text/javascript" src="../js/common/easyuiValidate.js"></script>
+
+<!-- 公共的js -->
+<script type="text/javascript" src="../js/common/acl.js"></script>
+
+<script type="text/javascript" src="../js/common/format.js"></script>
+<script type="text/javascript" src="../js/common/export.js"></script>
+<script type="text/javascript" src="../js/common/dict.js"></script>
+
+<!-- 测试结果信息列表-->
+<table id="datagrid_data" border="0" cellpadding="0" cellspacing="0" width="100%" height="550px">
+	<thead id="datagrid_data">
+		<tr align="center"></tr>
+	</thead>
+</table>
+<script type="text/javascript">
+
+	$(function(){
+		re_search();
+	})
+
+	function re_search() {
+		$('#datagrid_data').datagrid({
+			url:  '/selectFailEntrust',
+	        singleSelect: true,
+	        striped : true,
+	        fitColumns : false,
+	        border : false,
+	        showFooter: false,
+	        idField : 'id',
+	        rownumbers : true,
+	        pagination : true,
+	        pageSize : 50,
+			pageList:[50,100,150,200,300],
+	        pagePosition : 'bottom',
+	        rowStyler:function(index,row){  //没有对账的   设置字体颜色
+	    		if (row.test_status != 0){
+	    			return 'color:#FF0000;';
+	    		} 
+	    	},
+	    	//自适应列
+	        columns : [ [
+				{title : '委托时间', field : 'entrust_time', align: 'center',sortable:true,
+					formatter : function(value,row,index){
+						if(value==null){
+							return "合计";
+						}else{
+							return value;
+						}
+					},sortable:true},
+				{title : '交易账户编号', field : 'account_no', align: 'center'},
+				{title : '交易账户名称', field : 'account_name', align: 'center'},
+				{title : '资金池', field : 'fund_pool_code', align: 'center'},
+				{title : '委托类别', field : 'entrust_type', align: 'center',formatter:formatDict('entrustType')},
+				{title : '买卖标志', field : 'buy_sell_flag', align: 'center',formatter:formatDict('buySellFlag')},
+				{title : '股票代码', field : 'stock_code', align: 'center'},
+				{title : '股票名称', field : 'stock_name', align: 'center'},
+				{title : '委托数量', field : 'entrust_num', align: 'right',formatter:function(value,row,index){
+					return formatNumber(value);
+				},sortable:true,order:'desc'},
+				{title : '委托价格', field : 'entrust_price', align: 'right',formatter:function(value,row,index){
+					return formatMoney2(value);
+				},sortable:true,order:'desc'},
+				{title : '委托状态', field : 'entrust_status', align: 'center',formatter:formatDict('entrustStatus')},
+				{title : '委托编号', field : 'securities_trader_entrust_no', align: 'center'},
+				{title : '废单原因', field : 'remark', align: 'center'},
+				{title : '源系统代码', field : 'source_sys_code', align: 'center'},
+			]],
+			rowStyler:function(index,row){
+				return getColorBuySellFlag2(row);
+			}
+		});
+	}
+</script>

@@ -30,4 +30,9 @@ public interface PositionMapper {
 
     List<Map<String,Object>> selectPositionRange(PageRequest request);
     Map<String,Object> selectPositionRangeSum(PageRequest request);
+
+
+    List<Map<String,Object>> selectFailEntrust(PageRequest request);
+
+    Map<String,Object> selectFailEntrustSum(PageRequest request);
 }
