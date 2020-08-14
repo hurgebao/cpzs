@@ -49,7 +49,7 @@ public class PositionController {
     public PageResponse<Map<String,Object>> selectFailEntrust(PageRequest request){
         initSelectCondition(request);
         PageResponse<Map<String,Object>> response=new PageResponse<Map<String,Object>>();
-        List<Map<String,Object>> list= positionMapper.selectFailEntrust(request);
+       /* List<Map<String,Object>> list= positionMapper.selectFailEntrust(request);
         if(list!=null && list.size()>0){
             Map<String,Object> sumRecord= positionMapper.selectFailEntrustSum(request);
             list.add(sumRecord);
@@ -57,8 +57,8 @@ public class PositionController {
             response.setTotal(totalNum);
         }else{
             response.setTotal(0);
-        }
-        response.setRows(list);
+        }*/
+//        response.setRows(list);
         return response;
     }
     private void initSelectCondition(PageRequest request) {
